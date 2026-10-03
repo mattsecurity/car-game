@@ -246,17 +246,17 @@
 <!-- ================= MENU ================= -->
 <div id="menu">
   <h1>VELO<span>CE</span></h1>
-  <div class="sub">Il tuo prossimo viaggio inizia qui.</div>
+  <div class="sub">LA STRADA. IL SUONO. LA LIBERTÀ.</div>
 
-  <div id="edition"><i></i> FREE DRIVE / ITALIA</div><div id="showroom-caption">Scegli la tua auto.<br>Scopri una nuova strada.</div>
-  <div class="rowLabel">IL TUO GARAGE</div>
+  <div id="edition"><i></i> VOLUME 01 / ITALIA</div><div id="showroom-caption">Una città da attraversare.<br>Un motore da ascoltare.<br>Nessun percorso obbligato.</div>
+  <div class="rowLabel">01 / IL TUO GARAGE</div>
   <div class="cards" id="carCards"></div>
 
-  <div class="rowLabel" id="mapLabel">SCEGLI IL MONDO</div>
+  <div class="rowLabel" id="mapLabel">02 / DESTINAZIONE</div>
   <div class="cards" id="mapCards">
     <div class="card mapcard" data-map="0">
       <div class="preview" id="prevCity"></div>
-      <h3>Valdora</h3>
+      <h3>Porto Aurelio</h3>
       <p>Viali alberati, centro direzionale e quartieri residenziali. Esplora la città in libertà.</p>
     </div>
     <div class="card mapcard" data-map="1">
@@ -266,7 +266,7 @@
     </div>
   </div>
 
-  <div id="launchRow"><button id="startBtn">INIZIA A GUIDARE →</button>
+  <div id="launchRow"><button id="startBtn">ENTRA IN STRADA →</button>
   <div id="menuHint">WASD guida · C telecamera · ESC garage</div><label id="qualityMenu">GRAFICA <select id="quality"><option value="auto">Adattiva</option><option value="high">Alta</option><option value="performance">Prestazioni</option></select></label></div>
   <div id="iosHint">&#128241; Tutto schermo su iPhone/iPad: <b>Condividi</b> &#9654; <b>Aggiungi alla schermata Home</b>,<br>poi avvia VELOCE dall'icona: niente barra di Safari.</div>
 </div>
@@ -292,14 +292,6 @@
     <button class="envBtn pdBtn on" data-pd="on">Attivi</button>
     <button class="envBtn pdBtn" data-pd="off">Rimossi</button>
   </div>
-  <div class="envRow"><span>POLIZIA</span>
-    <button class="envBtn plBtn on" data-pl="on">Attiva</button>
-    <button class="envBtn plBtn" data-pl="off">Spenta</button>
-  </div>
-  <div class="envRow"><span>ASSISTENZE</span>
-    <button class="envBtn asBtn on" data-as="on">ABS · TC · ESC</button>
-    <button class="envBtn asBtn" data-as="off">Spente</button>
-  </div>
 </div>
 <div class="hudBox" id="raceInfo">
   <div class="chip"><div class="lbl" id="lapLbl">GIRO</div><div class="val" id="lapVal">1</div></div>
@@ -309,8 +301,6 @@
   <div class="chip"><div class="lbl">PUNTI</div><div class="val" id="scoreVal">0</div></div>
   <div class="chip orange" id="comboChip"><div class="lbl">COMBO</div><div class="val" id="comboVal">x1.0</div></div>
 </div>
-<div class="hudBox" id="wantedBox"><div id="wantedStars"></div><div id="wantedEvade"></div></div>
-<div id="bustedMsg">ARRESTATO<small>Punti −30% · auto riportata alla partenza</small></div>
 <div class="hudBox" id="gaugeWrap">
   <div id="gaugeBox">
     <svg id="gauge" viewBox="0 0 120 120"></svg>
@@ -348,11 +338,11 @@
 </div>
 <div class="hudBox" id="help">
   <b>W/&uarr;</b> Gas &nbsp; <b>S/&darr;</b> Freno/Retro &nbsp; <b>A D/&larr;&rarr;</b> Sterzo &nbsp; <b>SPAZIO</b> Freno a mano<br>
-  <b>R</b> Retromarcia &nbsp; <b>C</b> Telecamera &nbsp; <b>M</b> Audio &nbsp; <b>H</b> Clacson &nbsp; <b>1-4</b> Auto &nbsp; <b>ESC</b> Menu
+  <b>R</b> Retromarcia &nbsp; <b>C</b> Telecamera &nbsp; <b>M</b> Audio &nbsp; <b>1-4</b> Auto &nbsp; <b>ESC</b> Menu
 </div>
 <div class="hudBox" id="toast"></div>
 
-<div id="sessionTools"><button id="garageBtn">Garage</button><button id="photoBtn">Modalità foto</button><button id="resetBtn">Riposiziona</button><button id="settingsBtn" aria-expanded="false" aria-controls="envPanel">Ambiente ⚙</button><span id="perf"></span></div><div id="signalInfo" class="hidden" aria-live="polite"><i></i><span></span><small></small></div><div id="photoHint">FOTO / Trascina per ruotare · Rotella per zoom · P per uscire</div>
+<div id="sessionTools"><button id="garageBtn">GARAGE · ESC</button><button id="photoBtn">FOTO · P</button><button id="resetBtn">RIPOSIZIONA · T</button><span id="perf"></span></div><div id="photoHint">FOTO / Trascina per ruotare · Rotella per zoom · P per uscire</div>
 <script type="importmap">
 { "imports": { "three": "./node_modules/three/build/three.module.js",
                "three/addons/": "./node_modules/three/examples/jsm/" } }
@@ -365,21 +355,6 @@ import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
 import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
 import { OutputPass } from 'three/addons/postprocessing/OutputPass.js';
-import { GTAOPass } from 'three/addons/postprocessing/GTAOPass.js';
-import { signalState } from './simulation.js';
-import { Citizens } from './pedestrians.js';
-import { PoliceDispatcher, playHorn } from './police.js';
-import { GranularEngine } from './granular-engine.js';
-import { loadVehicleModel, applyVehicleModel } from './vehicle-models.js';
-import { plantForests } from './impostor-trees.js';
-import { CarFleet, makeCarMaterials } from './traffic-cars.js';
-import { makeWaterMaterial, makeDepthTexture } from './ocean.js';
-import { placeProps } from './props.js';
-import { loadCrowdTypes, Crowd } from './crowd.js';
-import { VehicleDynamics } from './vehicle-physics.js';
-import { VEHICLES } from './vehicles.js';
-import { TireSmoke, SmokePass, SMOKE_LAYER } from './tire-smoke.js';
-import { SHARED_TEXTURES, pbrMaterial, pbrMaps, terrainSplatMaterial } from './pbr-textures.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
 /* =====================================================================
@@ -403,7 +378,59 @@ if(IS_TOUCH) document.body.classList.add('touch');   // aggancio CSS (media quer
    cgH       : altezza baricentro -> intensita' del trasferimento di carico
    aDist/bDist: distanza baricentro -> asse anteriore / posteriore
 ===================================================================== */
-const MAPS = [ {id:'city', name:'Valdora'}, {id:'coast', name:'Riviera del Sole'} ];
+const VEHICLES = [
+{ id:'falcone', name:'FALCONE GT-S', tag:'SUPERCAR · RWD',
+  desc:'Berlinetta leggera: accelerazione brutale, sovrasterzo di potenza in uscita curva.',
+  mass:1280, engineForce:12800, brakeForce:15500, topSpeed:96,
+  maxSteer:0.62, steerFade:0.0042, steerSpeed:3.4,
+  stiffF:10.5, stiffR:10.0, muF:1.42, muR:1.30,
+  cgH:0.40, wheelBase:2.62, aDist:1.45, bDist:1.17,
+  drag:0.40, rollRes:16, drive:'R', ev:false,
+  gears:[16,28,42,58,76,96], revHz:[70,180], distortion:0.25,
+  sound:{ w1:'sawtooth', w2:'sawtooth', r2:0.5, r3:3.01, g3:0.45, lfoHz:0, lfoDepth:0, filt:[380,3000], vol:1.0 },
+  body:{ w:1.96,h:0.60,l:4.45, color:0xc8102e, cab:[1.55,0.42,1.85,-0.15], wheelR:0.34, wheelW:0.32, track:1.92, clearance:0.26, neon:0xff8c1a },
+  stats:[0.96,0.92,0.84] },
+
+{ id:'brutus', name:'BRUTUS 502', tag:'MUSCLE · RWD',
+  desc:'Pesante, coppia mostruosa ai bassi: il posteriore scappa sempre, controsterzo continuo.',
+  mass:1760, engineForce:14800, brakeForce:13000, topSpeed:78,
+  maxSteer:0.60, steerFade:0.0036, steerSpeed:2.8,
+  stiffF:9.0, stiffR:7.0, muF:1.18, muR:0.97,
+  cgH:0.58, wheelBase:2.95, aDist:1.35, bDist:1.60,
+  drag:0.52, rollRes:22, drive:'R', ev:false,
+  gears:[15,27,42,58,78], revHz:[44,120], distortion:0.65,
+  sound:{ w1:'sawtooth', w2:'square', r2:0.5, r3:1.5, g3:0.6, lfoHz:11, lfoDepth:0.4, filt:[180,1300], vol:1.2 },
+  body:{ w:1.98,h:0.74,l:4.95, color:0x23272f, cab:[1.68,0.46,1.70,-0.35], wheelR:0.37, wheelW:0.30, track:1.96, clearance:0.32, neon:0xff2f4a },
+  stats:[0.74,0.84,0.52] },
+
+{ id:'volt', name:'VOLT PIXIE EV', tag:'CITY EV · AWD',
+  desc:'Coppia istantanea 0-50, baricentro bassissimo (batterie a pavimento), stabile e reattiva.',
+  mass:1380, engineForce:9800, brakeForce:14800, topSpeed:46,
+  maxSteer:0.66, steerFade:0.0050, steerSpeed:4.2,
+  stiffF:10.2, stiffR:10.8, muF:1.30, muR:1.34,
+  cgH:0.30, wheelBase:2.45, aDist:1.22, bDist:1.23,
+  drag:0.46, rollRes:12, drive:'A', ev:true,
+  gears:[46], revHz:[110,820], distortion:0.0,
+  sound:{ w1:'sine', w2:'triangle', r2:2.0, r3:6.0, g3:0.22, lfoHz:0, lfoDepth:0, filt:[700,3800], vol:0.45 },
+  body:{ w:1.78,h:0.86,l:3.55, color:0x19c2b8, cab:[1.50,0.50,1.55,0.05], wheelR:0.30, wheelW:0.24, track:1.68, clearance:0.26, neon:0x19f9d8 },
+  stats:[0.55,0.90,0.95] },
+
+{ id:'fuoco', name:'FUOCO F1-90', tag:'FORMULA · RWD',
+  desc:'Monoposto anni \'90: 600 kg, aerodinamica che la incolla a terra. Sopra i 150 km/h curva sui binari.',
+  mass:600, engineForce:15500, brakeForce:26000, topSpeed:97,
+  maxSteer:0.55, steerFade:0.0024, steerSpeed:4.6,
+  stiffF:13.5, stiffR:13.0, muF:1.75, muR:1.70,
+  cgH:0.24, wheelBase:2.90, aDist:1.55, bDist:1.35,
+  drag:0.45, rollRes:18, drive:'R', ev:false, df:1.9,
+  gears:[17,28,40,54,72,97], revHz:[135,590], distortion:0.38,
+  // V10 anni '90: fondamentale alta, quinta (r2 1.5) + terza armonica dense, detune
+  // forte per i battimenti, picco risonante stretto e filtro molto aperto = urlo
+  sound:{ w1:'sawtooth', w2:'sawtooth', r2:1.5, r3:3.01, g3:0.75, det:22, pq:3.4,
+          lfoHz:0, lfoDepth:0, filt:[900,7800], vol:1.15 },
+  body:{ w:1.42,h:0.45,l:4.55, color:0xf2f4f6, wheelR:0.33, wheelRR:0.37, wheelW:0.36, wheelWR:0.50, track:1.86, clearance:0.10, neon:0xffd23c },
+  stats:[1.0,1.0,1.0] }
+];
+const MAPS = [ {id:'city', name:'Porto Aurelio'}, {id:'coast', name:'Riviera del Sole'} ];
 
 /* =====================================================================
    INPUT
@@ -421,7 +448,6 @@ addEventListener('keydown', e=>{
   if(e.code==='KeyT' && state.running && !state.paused) recoverCar();
   if (e.code==='KeyC' && state.running) cycleCamera();
   if (e.code==='KeyR') toggleGearReq = true;
-  if (e.code==='KeyH' && state.running && !state.paused && !e.repeat) { playHorn(audio); if(police) police.honk(); }
   if (e.code==='KeyM') { audio.muted=!audio.muted; toast(audio.muted?'AUDIO OFF':'AUDIO ON'); }
   if (e.code==='Escape') toggleMenu();
   if (/^Digit[1-4]$/.test(e.code)){
@@ -440,7 +466,7 @@ addEventListener('gesturestart', e=>e.preventDefault()); // niente pinch-zoom iO
    AUDIO MOTORE (sintesi WebAudio: niente file esterni)
 ===================================================================== */
 class EngineAudio {
-  constructor(){ this.ready=false; this.muted=false; this.profile=VEHICLES[0]; this.gran=null; this.granCache={}; }
+  constructor(){ this.ready=false; this.muted=false; this.profile=VEHICLES[0]; }
   init(){
     // iOS/Android sospendono l'AudioContext: al primo gesto utile lo si riattiva
     if (this.ready){ if(this.ctx && this.ctx.state==='suspended') this.ctx.resume(); return; }
@@ -515,14 +541,6 @@ class EngineAudio {
   }
   setProfile(cfg){
     this.profile=cfg; this.setDistortion(cfg.distortion);
-    // motore registrato (granulare) se il veicolo ne ha uno; altrimenti sintesi
-    if(this.ready){
-      if(this.gran){ this.gran.silence(); this.gran=null; }
-      if(cfg.bank){
-        this.granCache[cfg.bank]=this.granCache[cfg.bank]||GranularEngine.load(this.ctx,this.master,cfg.bank);
-        this.granCache[cfg.bank].then(g=>{ if(g&&this.profile===cfg) this.gran=g; });
-      }
-    }
     if(this.ready&&!cfg.ev){
       const real=new Float32Array(32),imag=new Float32Array(32);
       for(let n=1;n<32;n++)imag[n]=Math.exp(-n*.16)*(n%2===0?.65:1)/Math.sqrt(n);
@@ -561,7 +579,6 @@ class EngineAudio {
     const t=this.ctx.currentTime;
     for(const g of [this.g1,this.g1b,this.g2,this.g3,this.skidG,this.gIn,this.dirtG,this.lfoG,...Object.values(this.ambience).map(v=>v.gain)])
       g.gain.setTargetAtTime(0, t, .09);
-    if(this.gran) this.gran.silence();
   }
   update(rpm, thr, skid, gearNum, dirt=0){
     if (!this.ready) return;
@@ -593,12 +610,10 @@ class EngineAudio {
     this.ambience.road.filter.frequency.setTargetAtTime(180+speed*14,t,.2);
     this.ambience.wind.gain.gain.setTargetAtTime(Math.min(.17,(speed/100)**2)*mute,t,.2);
     this.ambience.rain.gain.gain.setTargetAtTime((state.weather==='rain'?.055:0)*mute,t,.4);
-    const synth=this.gran?0:1;   // con il motore registrato gli oscillatori tacciono
-    if(this.gran) this.gran.update(rpm, thr, 1.0*s.vol*mute*duckMul);
-    const base=(p.ev? .03+thr*.05 : .045+thr*.10+rpm*.05)*s.vol*mute*duckMul*synth;
+    const base=(p.ev? .03+thr*.05 : .045+thr*.10+rpm*.05)*s.vol*mute*duckMul;
     this.g1.gain.setTargetAtTime(base, t, .05);
     this.g1b.gain.setTargetAtTime(base*0.55, t, .05);
-    this.g2.gain.setTargetAtTime((p.ev? .008 : .03+thr*.06)*s.vol*mute*duckMul*synth, t, .05);
+    this.g2.gain.setTargetAtTime((p.ev? .008 : .03+thr*.06)*s.vol*mute*duckMul, t, .05);
     this.g3.gain.setTargetAtTime(base*s.g3, t, .05);
     // LFO forte al minimo, sparisce su di giri (idle "lopey" della muscle)
     this.lfo.frequency.setTargetAtTime(s.lfoHz||0.01, t, .1);
@@ -641,31 +656,13 @@ try {
 const camera = new THREE.PerspectiveCamera(62, innerWidth/innerHeight, 0.1, 4000);
 
 // post-processing: bloom su neon/fari/finestre (solo desktop, su mobile costa troppo)
-let composer=null, bloomPass=null, aoPass=null;
-// oggetti esclusi dal passaggio di occlusione (impostori: nel materiale di normali sarebbero rettangoli)
-const AO_EXCLUDE=new Set();
+let composer=null;
 if(!IS_TOUCH){
-  { // profondità condivisa fra i due buffer: il fumo, disegnato dopo l'AO sul buffer "di lettura",
-    // resta nascosto dietro auto, muri e alberi (GTAO/bloom non scrivono profondità)
-    const sz=renderer.getSize(new THREE.Vector2()), pr=renderer.getPixelRatio();
-    const rt=new THREE.WebGLRenderTarget(sz.x*pr, sz.y*pr, { type:THREE.HalfFloatType, depthTexture:new THREE.DepthTexture(sz.x*pr, sz.y*pr) });
-    composer=new EffectComposer(renderer, rt);
-    composer.renderTarget2.depthTexture=composer.renderTarget1.depthTexture;
-  }
+  composer=new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene,camera));
-  // occlusione ambientale (GTAO): ombre di contatto fra muri, marciapiedi, auto e arredo
-  aoPass=new GTAOPass(scene,camera,innerWidth,innerHeight);
-  aoPass.updateGtaoMaterial({ radius:1.4, distanceExponent:1.6, thickness:1.5, scale:1.15, samples:12, distanceFallOff:1 });
-  aoPass.updatePdMaterial({ lumaPhi:10, depthPhi:2, normalPhi:3, radius:6, rings:2, samples:12 });
-  aoPass.blendIntensity=0.85;
-  { const render=aoPass.render.bind(aoPass);
-    aoPass.render=(...args)=>{ const hid=[]; for(const o of AO_EXCLUDE) if(o.visible){ o.visible=false; hid.push(o); }
-      render(...args); for(const o of hid) o.visible=true; }; }
-  composer.addPass(aoPass);
   // buffer HDR lineare (tone mapping arriva solo in OutputPass): soglia sopra 1
   // cosi' di giorno resta pulito e di notte brillano solo neon/fari/vetrine
-  bloomPass=new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight), 0.38, 0.4, 1.35);
-  composer.addPass(bloomPass);
+  composer.addPass(new UnrealBloomPass(new THREE.Vector2(innerWidth,innerHeight), 0.38, 0.4, 1.35));
   composer.addPass(new OutputPass());  // tone mapping + sRGB a valle del bloom
 }
 addEventListener('resize', ()=>{ camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix();
@@ -704,7 +701,7 @@ const sky=(()=>{
 })();
 
 // sole/luna visibile all'orizzonte (tramonto)
-const sunBall = new THREE.Mesh(new THREE.SphereGeometry(6,24,16),
+const sunBall = new THREE.Mesh(new THREE.SphereGeometry(40,24,24),
   new THREE.MeshBasicMaterial({ color:0xffae42, fog:false }));
 sunBall.visible=false; scene.add(sunBall);
 
@@ -744,41 +741,6 @@ function makeSmokeTexture(){
   gr.addColorStop(0,'rgba(255,255,255,0.85)'); gr.addColorStop(0.5,'rgba(255,255,255,0.35)'); gr.addColorStop(1,'rgba(255,255,255,0)');
   x.fillStyle=gr; x.fillRect(0,0,64,64);
   return new THREE.CanvasTexture(c);
-}
-// Facciata di villetta all'italiana: intonaco chiaro (tinto per istanza), finestre con
-// persiane, portone al piano terra. Una texture per tutte le case (varietà dal colore).
-function makeHouseTexture(){
-  const c=document.createElement('canvas'); c.width=512; c.height=256; const x=c.getContext('2d');
-  x.fillStyle='#f1ece2'; x.fillRect(0,0,512,256);
-  x.fillStyle='#d9d2c4'; x.fillRect(0,236,512,20);                 // zoccolatura
-  x.fillStyle='#e4ddd0'; x.fillRect(0,124,512,6);                  // marcapiano
-  const shutter=Math.random()<0.5?'#3f6b45':'#6b4a32';
-  const win=(wx,wy,w,h)=>{
-    x.fillStyle='#cfc6b6'; x.fillRect(wx-5,wy-5,w+10,h+12);         // cornice in pietra
-    x.fillStyle='#2c3640'; x.fillRect(wx,wy,w,h);                   // vetro
-    x.fillStyle='rgba(170,190,205,.35)'; x.fillRect(wx+2,wy+2,w*0.45,h*0.5);
-    x.fillStyle='#e9e4da'; x.fillRect(wx+w/2-1.5,wy,3,h); x.fillRect(wx,wy+h*0.45,w,3);
-    for(const sx of [wx-w*0.52-5,wx+w+5]){ x.fillStyle=shutter; x.fillRect(sx,wy-2,w*0.52,h+4);   // persiane aperte
-      x.fillStyle='rgba(0,0,0,.28)'; for(let k=4;k<h;k+=5) x.fillRect(sx+2,wy+k,w*0.52-4,1.5); }
-  };
-  for(const wx of [58,178,300,420]) win(wx-17,30,34,62);                 // primo piano
-  for(const wx of [58,420]) win(wx-17,152,34,62);                        // piano terra
-  x.fillStyle='#cfc6b6'; x.fillRect(214,138,84,98); x.fillStyle='#4a3324'; x.fillRect(222,146,68,90);   // portone
-  x.fillStyle='rgba(0,0,0,.25)'; x.fillRect(255,146,2,90);
-  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.anisotropy=4; return t;
-}
-// Coppi in terracotta: file di tegole curve con ombra, tinta per istanza.
-function makeRoofTexture(){
-  const c=document.createElement('canvas'); c.width=256; c.height=256; const x=c.getContext('2d');
-  x.fillStyle='#8a4a32'; x.fillRect(0,0,256,256);
-  for(let row=0;row<16;row++) for(let col=0;col<12;col++){
-    const px=col*22+(row%2)*11-11, py=row*16;
-    const g=x.createLinearGradient(px,0,px+22,0); const v=0.85+Math.random()*0.3;
-    g.addColorStop(0,`rgb(${110*v|0},${52*v|0},${34*v|0})`); g.addColorStop(0.45,`rgb(${196*v|0},${104*v|0},${70*v|0})`); g.addColorStop(1,`rgb(${96*v|0},${46*v|0},${30*v|0})`);
-    x.fillStyle=g; x.beginPath(); x.ellipse(px+11,py+8,11,10,0,0,Math.PI*2); x.fill();
-    x.fillStyle='rgba(0,0,0,.25)'; x.fillRect(px,py+15,22,2);
-  }
-  const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; t.wrapS=t.wrapT=THREE.RepeatWrapping; t.repeat.set(4,4); t.anisotropy=4; return t;
 }
 function makeWindowTexture(){
   // due canvas: colore (facciata+finestre) ed emissivo (SOLO finestre accese,
@@ -820,7 +782,7 @@ function makeStorefrontTexture(){
   const c=document.createElement('canvas');c.width=1024;c.height=256;
   const x=c.getContext('2d');x.scale(4,4);
   x.fillStyle='#8e8980';x.fillRect(0,0,256,64);
-  const names=['CAFFÈ VALDORA','LIBRERIA','STUDIO 04','PANETTERIA','GALLERIA','RIVIERA'];
+  const names=['CAFFÈ AURELIO','LIBRERIA','STUDIO 04','PANETTERIA','GALLERIA','RIVIERA'];
   for(let i=0;i<6;i++){
     const px=6+i*42;
     x.fillStyle='#292e2e';x.fillRect(px,13,36,47);
@@ -864,7 +826,6 @@ function makePavementTexture(){
 }
 const smokeTex = makeSmokeTexture();
 const winTexes = [makeWindowTexture(), makeWindowTexture(), makeWindowTexture(), makeWindowTexture()];
-const houseTex = makeHouseTexture(), roofTex = makeRoofTexture();
 const storeTexes = [makeStorefrontTexture(), makeStorefrontTexture()];
 const textureLoader=new THREE.TextureLoader();
 const assetResults=await Promise.allSettled([
@@ -884,7 +845,7 @@ function roadDetails(material,repeat){
 const paveTex = makePavementTexture();
 
 /* --- tabelloni LED animati della città: 2 canvas condivisi da tutti i pannelli --- */
-const ADS=[['VALDORA','#d9c4a3'],['RIVIERA','#bbcbd0'],['CINEMA','#dcbb93'],
+const ADS=[['AURELIO','#d9c4a3'],['RIVIERA','#bbcbd0'],['CINEMA','#dcbb93'],
            ['VELOCE','#d5d9dc'],['STUDIO 04','#c5cbb2'],['GRAN TURISMO','#d6b99f']];
 const adCanv=[0,1].map(()=>{ const c=document.createElement('canvas'); c.width=256; c.height=128; return c; });
 const adTex=adCanv.map(c=>{ const t=new THREE.CanvasTexture(c); t.colorSpace=THREE.SRGBColorSpace; return t; });
@@ -941,12 +902,7 @@ class SpritePool {
     }
   }
 }
-// fumo gomme / polvere / spruzzi: sbuffi volumetrici istanziati (tire-smoke.js)
-const tireSmoke = new TireSmoke(scene, { max:IS_TOUCH?220:420, rateScale:IS_TOUCH?0.55:1, layer:composer?SMOKE_LAYER:0 });
-AO_EXCLUDE.add(tireSmoke.mesh);
-// desktop: il fumo ha un suo pass dopo l'AO, a metà risoluzione, con particelle morbide sulla profondità della scena
-if(composer) composer.insertPass(new SmokePass(tireSmoke, scene, camera, { depth:()=>composer.renderTarget1.depthTexture }),
-  composer.passes.indexOf(aoPass)+1);
+const smoke  = new SpritePool(140, { additive:false });
 const sparks = new SpritePool(160, { additive:true, grav:-22 });
 
 function burstSparks(p, n, baseVel){
@@ -1052,7 +1008,7 @@ const skidMarks=new SkidMarks(9000);
 let world = null;
 
 function disposeSceneGroup(group){
-  const shared=new Set([...SHARED_TEXTURES,houseTex,roofTex,envTex,smokeTex,asphTex,asphNormal,asphRough,paveTex,...adTex,...storeTexes,...winTexes.flatMap(t=>[t.map,t.emi])]);
+  const shared=new Set([envTex,smokeTex,asphTex,asphNormal,asphRough,paveTex,...adTex,...storeTexes,...winTexes.flatMap(t=>[t.map,t.emi])]);
   const geometries=new Set(),materials=new Set(),textures=new Set();
   group.traverse(o=>{if(o.geometry)geometries.add(o.geometry);for(const m of [].concat(o.material||[]))materials.add(m);});
   for(const m of materials){for(const key of ['map','bumpMap','normalMap','roughnessMap','emissiveMap','alphaMap'])if(m[key]&&!shared.has(m[key]))textures.add(m[key]);m.dispose();}
@@ -1060,10 +1016,8 @@ function disposeSceneGroup(group){
 }
 function disposeWorld(){
   if(!world) return;
-  AO_EXCLUDE.clear(); AO_EXCLUDE.add(tireSmoke.mesh);
   if(traffic){ traffic.dispose(); traffic=null; }
   if(peds){ peds.dispose(); peds=null; }
-  if(police){ police.dispose(); police=null; }
   scene.remove(world.group);
   disposeSceneGroup(world.group);
   world=null;
@@ -1108,13 +1062,10 @@ function buildCity(){
     const m=Math.max(Math.abs(i),Math.abs(j));
     return m<=1?'core':(m<=3?'mid':'res');
   };
-  const parkList=[], pedBlocks=[], parkTreeDefs=[], parkLawns=[];
-  const waterTime={ value:0 };
-  const pondWater=makeWaterMaterial({ time:waterTime, foam:false, scale:0.16, shallow:0x46705a, deep:0x1d3d36, opacityShallow:false });
-  const pondRim=new THREE.MeshStandardMaterial({ ...pbrMaps('rock_face_03',1,{ao:false}), color:0x9c9890, roughness:1 });
-  for(const k of ['map','normalMap','roughnessMap']) pondRim[k].repeat.set(22,1);   // pietre lungo il giro del bordo
-  // lastre reali (Poly Haven pavement_02, 2.12 m per ripetizione): 33 ripetizioni sul blocco da 70 m
-  const sideMat=new THREE.MeshStandardMaterial({ ...pbrMaps('pavement_02',33,{ao:false}), color:0xffffff, roughness:1 });
+  const parkList=[], pedBlocks=[], parkTreeDefs=[];
+  const pt=paveTex.clone(); pt.repeat.set(22,22); pt.needsUpdate=true;
+  const sideMat=new THREE.MeshStandardMaterial({ map:pt, color:0xb8bdc4, roughness:0.9,
+    bumpMap:pt, bumpScale:0.035 });   // fughe delle lastre in rilievo
   const NEON=[0x2de2ff,0xff3ca6,0xb44bff,0x19f9d8,0xffd23c];
 
   const roofMat=new THREE.MeshStandardMaterial({ color:0x3c4148, roughness:.9 });
@@ -1145,7 +1096,7 @@ function buildCity(){
   const slabGeo=new THREE.BoxGeometry(70,0.3,70); slabGeo.translate(0,0.15,0);
   const slabs=new THREE.InstancedMesh(slabGeo, sideMat, (2*n+1)*(2*n+1));
   slabs.receiveShadow=true;
-  const SLAB_TINT={ core:0xe2e4e7, mid:0xe6e6e4, res:0xefebe1, ind:0xb7bcc2, park:0xe6e6e4 };
+  const SLAB_TINT={ core:0xb8bdc4, mid:0xb8bdc4, res:0xc6c8bd, ind:0x969ca3, park:0x55803f };
   let slabIx=0;
   const M0=new THREE.Matrix4(), C0=new THREE.Color();
 
@@ -1160,19 +1111,11 @@ function buildCity(){
 
     if(DI==='park'){                                   // parco: laghetto + alberi fitti
       parkList.push({ x:cx, z:cz });
-      parkLawns.push({ x:cx, z:cz });
-      // laghetto in un quadrante (i vialetti a croce passano al centro)
-      const pr=rnd(7.5,9.5), px=cx+(Math.random()<.5?-1:1)*14.5, pz=cz+(Math.random()<.5?-1:1)*14.5;
-      const pondGeo=new THREE.CircleGeometry(pr,40); pondGeo.rotateX(-Math.PI/2);
-      const pond=new THREE.Mesh(pondGeo, pondWater); pond.position.set(px,0.33,pz); group.add(pond);
-      const rimGeo=new THREE.TorusGeometry(pr+0.15,0.38,8,56); rimGeo.rotateX(Math.PI/2); rimGeo.scale(1,0.45,1);
-      const rim=new THREE.Mesh(rimGeo, pondRim); rim.position.set(px,0.36,pz); rim.castShadow=true; rim.receiveShadow=true; group.add(rim);
-      parkLawns[parkLawns.length-1].pond={ x:px, z:pz, r:pr };
-      for(let t=0,g=0;t<16&&g<400;g++){
-        const tx=cx+rnd(-27,27), tz=cz+rnd(-27,27);
-        if(Math.abs(tx-cx)<3.5||Math.abs(tz-cz)<3.5||Math.hypot(tx-px,tz-pz)<pr+3.5) continue;   // niente alberi su vialetti e laghetto
-        parkTreeDefs.push({ x:tx, z:tz, k:rnd(1.0,1.9) }); t++;
-      }
+      const pond=new THREE.Mesh(new THREE.CircleGeometry(rnd(10,14),24),
+        new THREE.MeshStandardMaterial({ color:0x1d4e6b, roughness:.15, metalness:.55 }));
+      pond.rotation.x=-Math.PI/2; pond.position.set(cx+rnd(-8,8),0.32,cz+rnd(-8,8));
+      group.add(pond);
+      for(let t=0;t<16;t++) parkTreeDefs.push({ x:cx+rnd(-30,30), z:cz+rnd(-30,30), k:rnd(1.0,1.9) });
       continue;
     }
 
@@ -1229,9 +1172,6 @@ function buildCity(){
     for(const t of [tex.map,tex.emi]) {t.wrapS=t.wrapT=THREE.RepeatWrapping;t.repeat.set(bw/24,bh/57.6);t.needsUpdate=true;t.anisotropy=4;}
     const bMat=new THREE.MeshStandardMaterial({ map:tex.map, emissiveMap:tex.emi, emissive:0xffffff,
       emissiveIntensity:0, color:tint, roughness:isCore?.32:.72, metalness:isCore?.32:.06, envMap:envTex, envMapIntensity:.4 });
-    // rilievo reale della facciata (intonaco o cemento, ripetuto ogni ~2.5 m) sotto finestre e cornici
-    { const fd=pbrMaps(isCore?'concrete_wall_003':'painted_plaster_wall',1,{ao:false}).normalMap; fd.repeat.set(bw/2.5,bh/2.5);
-      bMat.normalMap=fd; bMat.normalScale=new THREE.Vector2(.55,.55); }
     winMats.push(bMat);
     const twoTier=bh>60&&Math.random()<0.55;
     const h1=twoTier?bh*0.62:bh;
@@ -1291,15 +1231,14 @@ function buildCity(){
     const bodyGeo=new THREE.BoxGeometry(1,1,1); bodyGeo.translate(0,0.5,0);
     const roofGeo=new THREE.BoxGeometry(0.74,0.74,1.06); roofGeo.rotateZ(Math.PI/4);
     const yardGeo=new THREE.BoxGeometry(1,1,1); yardGeo.translate(0,0.5,0);
-    const plaster=pbrMaps('painted_plaster_wall',1,{ao:false}); plaster.normalMap.repeat.set(6,3); plaster.roughnessMap.repeat.set(6,3);
-    const bodyMat=new THREE.MeshStandardMaterial({ map:houseTex, normalMap:plaster.normalMap, roughnessMap:plaster.roughnessMap, normalScale:new THREE.Vector2(.8,.8), color:0xffffff, roughness:1 });
-    const roofMat2=new THREE.MeshStandardMaterial({ map:roofTex, color:0xffffff, roughness:.85 });
-    const yardMat=new THREE.MeshStandardMaterial({ ...pbrMaps('leafy_grass',14.5,{ao:false}), color:0xffffff, roughness:1 });
+    const bodyMat=new THREE.MeshStandardMaterial({ color:0xffffff, roughness:.8 });
+    const roofMat2=new THREE.MeshStandardMaterial({ color:0xffffff, roughness:.85 });
+    const yardMat=new THREE.MeshStandardMaterial({ color:0xffffff, roughness:1 });
     const bodies=new THREE.InstancedMesh(bodyGeo, bodyMat, houseDefs.length);
     const roofs=new THREE.InstancedMesh(roofGeo, roofMat2, houseDefs.length);
     const yardsM=new THREE.InstancedMesh(yardGeo, yardMat, yardDefs.length);
-    const WALLC=[0xf2e6cf,0xefd3b0,0xe8c9a0,0xf0dca8,0xe9c1a8,0xd9e0d2,0xf4efe6];   // tinte liguri: ocra, rosa, avorio
-    const ROOFC=[0xffffff,0xf0e0d6,0xe6d2c8,0xd8c8c0];   // coppi più o meno anneriti dal tempo
+    const WALLC=[0xd8cfc0,0xc9b8a4,0xb5c4c9,0xd0c090,0xc4a4a4,0x9fb4a0];
+    const ROOFC=[0x6b4a3a,0x565b62,0x7a4444,0x4d5a4a];
     houseDefs.forEach((H,ix)=>{
       IM.identity(); IM.makeScale(H.w,H.h,H.d); IM.setPosition(H.x,0.34,H.z);
       bodies.setMatrixAt(ix,IM);
@@ -1311,7 +1250,7 @@ function buildCity(){
     yardDefs.forEach((Y,ix)=>{
       IM.identity(); IM.makeScale(29,0.36,29); IM.setPosition(Y.x,0,Y.z);
       yardsM.setMatrixAt(ix,IM);
-      yardsM.setColorAt(ix, IC.setRGB(rnd(0.55,0.66), rnd(0.72,0.82), rnd(0.46,0.56)));
+      yardsM.setColorAt(ix, IC.setHSL(rnd(0.26,0.34), rnd(0.35,0.5), rnd(0.26,0.36)));
     });
     bodies.castShadow=true; roofs.castShadow=true; yardsM.receiveShadow=true;
     group.add(bodies,roofs,yardsM);
@@ -1383,7 +1322,7 @@ function buildCity(){
     const led2=led.clone(); led2.rotation.y=0; led2.position.z=0.5; gg.add(led2);
     group.add(gg);
   };
-  addGantry(-48,-190,0,'VALDORA');   // sulla strada di partenza
+  addGantry(-48,-190,0,'PORTO AURELIO');   // sulla strada di partenza
   addGantry(48,190,0,'VELOCE');
   addGantry(190,-144,Math.PI/2,'RACE NOW');
 
@@ -1433,42 +1372,7 @@ function buildCity(){
       }
     }
   }
-  // alberi fotogrammetrici (impostori): viali = specie "street", parchi = jacaranda + ulivi
-  const treeSpots={ street:[], park:[], island1:[] };
-  for(const T of treeDefs) if(!IS_TOUCH||Math.random()<0.6) treeSpots.street.push({ x:T.x, y:0.3, z:T.z, h:rnd(6,8.5) });
-  for(const T of parkTreeDefs){ if(Math.random()<0.55) treeSpots.park.push({ x:T.x, y:0.3, z:T.z, h:rnd(10,14) }); else treeSpots.island1.push({ x:T.x, y:0.3, z:T.z, h:rnd(5,7) }); }
   treeDefs.push(...parkTreeDefs);   // alberi dei parchi e dei giardini nella stessa InstancedMesh
-  // prato vero dei parchi (Poly Haven leafy_grass, 2 m per ripetizione) dentro l'anello lastricato
-  if(parkLawns.length){
-    const lawnGeo=new THREE.PlaneGeometry(58,58); lawnGeo.rotateX(-Math.PI/2);
-    const lawns=new THREE.InstancedMesh(lawnGeo, pbrMaterial('leafy_grass',29,{ color:0x9ebf78 }), parkLawns.length);
-    parkLawns.forEach((p,k)=>{ M.makeTranslation(p.x,0.304,p.z); lawns.setMatrixAt(k,M); });
-    lawns.receiveShadow=true; group.add(lawns);
-    // vialetti lastricati a croce (3 m) e arredo Poly Haven lungo i vialetti
-    const pathGeo=new THREE.PlaneGeometry(3,58); pathGeo.rotateX(-Math.PI/2);
-    const pathMat=new THREE.MeshStandardMaterial({ ...pbrMaps('pavement_02',1,{ao:false}), color:0xe8e4dc, roughness:1 });
-    for(const k of ['map','normalMap','roughnessMap']) pathMat[k].repeat.set(1.4,27);
-    const paths=new THREE.InstancedMesh(pathGeo, pathMat, parkLawns.length*2);
-    const parkBench=[], parkTables=[], parkBins=[];
-    parkLawns.forEach((p,k)=>{
-      M.makeTranslation(p.x,0.307,p.z); paths.setMatrixAt(k*2,M);
-      M.makeRotationY(Math.PI/2); M.setPosition(p.x,0.3075,p.z); paths.setMatrixAt(k*2+1,M);
-      for(const d of [-22,-11,11,22]){
-        parkBench.push({ x:p.x+d, y:0.305, z:p.z+2.7, a:Math.PI }, { x:p.x+2.7, y:0.305, z:p.z+d, a:-Math.PI/2 });
-        if(Math.abs(d)===11) parkBins.push({ x:p.x+d+1.5, y:0.305, z:p.z+2.5, a:rnd(0,6.28) });
-      }
-      for(let t=0,g=0;t<3&&g<200;g++){
-        const tx=p.x+rnd(-24,24), tz=p.z+rnd(-24,24);
-        if(Math.abs(tx-p.x)<6||Math.abs(tz-p.z)<6||Math.hypot(tx-p.pond.x,tz-p.pond.z)<p.pond.r+4) continue;
-        if(parkTreeDefs.some(T=>Math.hypot(T.x-tx,T.z-tz)<3)) continue;
-        parkTables.push({ x:tx, y:0.305, z:tz, a:rnd(0,6.28) }); t++;
-      }
-    });
-    paths.receiveShadow=true; group.add(paths);
-    placeProps(group,'painted_wooden_bench',parkBench);
-    placeProps(group,'wooden_picnic_table',parkTables);
-    placeProps(group,'metal_trash_can',parkBins,{ upright:true });
-  }
   const trunkGeo=new THREE.CylinderGeometry(0.10,0.17,1.8,6); trunkGeo.translate(0,0.9,0);
   const crownGeo=new THREE.IcosahedronGeometry(1.15,2);
   {const a=crownGeo.attributes.position;for(let k=0;k<a.count;k++){const v=new THREE.Vector3().fromBufferAttribute(a,k);const d=1+.12*Math.sin(v.x*13)*Math.cos(v.z*11);a.setXYZ(k,v.x*d,v.y*d*1.35,v.z*d);}crownGeo.computeVertexNormals();} crownGeo.translate(0,2.6,0);
@@ -1484,7 +1388,6 @@ function buildCity(){
   });
   crowns.castShadow=true;
   group.add(trunks,crowns);
-  const oldTrees=[trunks,crowns];   // restano come riserva finché gli impostori non sono pronti
 
   /* --- ARREDO URBANO: idranti agli angoli, panchine con schienale verso
      le vetrine (fascia 29.9, dietro la corsia dei pedoni a 31.3-32.8) --- */
@@ -1513,8 +1416,20 @@ function buildCity(){
   hydBody.castShadow=true;
   group.add(hydBody,hydCap);
 
-  // panchine vere (Poly Haven) sui marciapiedi, dietro la corsia dei pedoni
-  placeProps(group,'painted_wooden_bench',benchDefs.map(B=>({ x:B.x, y:0.3, z:B.z, a:B.a })));
+  const seatGeo=new THREE.BoxGeometry(1.7,0.07,0.50); seatGeo.translate(0,0.45,0);
+  const backGeo=new THREE.BoxGeometry(1.7,0.45,0.06); backGeo.translate(0,0.72,-0.24);
+  const legGeo2=new THREE.BoxGeometry(0.30,0.44,0.40); legGeo2.translate(0,0.22,0);
+  const woodMat=new THREE.MeshStandardMaterial({ color:0x7a5c40, roughness:.85 });
+  const legMat=new THREE.MeshStandardMaterial({ color:0x2e343c, roughness:.6, metalness:.5 });
+  const seats=new THREE.InstancedMesh(seatGeo, woodMat, benchDefs.length);
+  const backs=new THREE.InstancedMesh(backGeo, woodMat, benchDefs.length);
+  const legs2=new THREE.InstancedMesh(legGeo2, legMat, benchDefs.length);
+  benchDefs.forEach((B,ix)=>{
+    M.makeRotationY(B.a); M.setPosition(B.x,0.3,B.z);
+    seats.setMatrixAt(ix,M); backs.setMatrixAt(ix,M); legs2.setMatrixAt(ix,M);
+  });
+  seats.castShadow=true;
+  group.add(seats,backs,legs2);
 
   // segnaletica: linee centrali tratteggiate sulle strade
   const quads=[];
@@ -1538,11 +1453,10 @@ function buildCity(){
   }
   // linee di stop: barra bianca sulla corsia in arrivo, prima delle zebre
   for(const ix of centers6) for(const jz of centers6){
-    // guida a destra: chi va verso +z sta sul lato -x, chi va verso +x sul lato +z
-    quads.push([[ix-13.4,0.024,jz-17.4],[ix-1.0,0.024,jz-17.4],[ix-1.0,0.024,jz-16.7],[ix-13.4,0.024,jz-16.7]]);   // verso +z
-    quads.push([[ix+1.0,0.024,jz+16.7],[ix+13.4,0.024,jz+16.7],[ix+13.4,0.024,jz+17.4],[ix+1.0,0.024,jz+17.4]]);   // verso -z
-    quads.push([[ix-17.4,0.024,jz+1.0],[ix-16.7,0.024,jz+1.0],[ix-16.7,0.024,jz+13.4],[ix-17.4,0.024,jz+13.4]]);   // verso +x
-    quads.push([[ix+16.7,0.024,jz-13.4],[ix+17.4,0.024,jz-13.4],[ix+17.4,0.024,jz-1.0],[ix+16.7,0.024,jz-1.0]]);   // verso -x
+    quads.push([[ix+1.0,0.024,jz-17.4],[ix+13.4,0.024,jz-17.4],[ix+13.4,0.024,jz-16.7],[ix+1.0,0.024,jz-16.7]]);   // verso +z
+    quads.push([[ix-13.4,0.024,jz+16.7],[ix-1.0,0.024,jz+16.7],[ix-1.0,0.024,jz+17.4],[ix-13.4,0.024,jz+17.4]]);   // verso -z
+    quads.push([[ix-17.4,0.024,jz-13.4],[ix-16.7,0.024,jz-13.4],[ix-16.7,0.024,jz-1.0],[ix-17.4,0.024,jz-1.0]]);   // verso +x
+    quads.push([[ix+16.7,0.024,jz+1.0],[ix+17.4,0.024,jz+1.0],[ix+17.4,0.024,jz+13.4],[ix+16.7,0.024,jz+13.4]]);   // verso -x
   }
   const dash=buildQuadMesh(quads, 0xcfd4da); dash.receiveShadow=true; group.add(dash);
 
@@ -1550,13 +1464,13 @@ function buildCity(){
      Gruppo 0 = strade nord-sud, gruppo 1 = est-ovest --- */
   const tlDefs=[];
   for(const ix of centers6) for(const jz of centers6){
-    tlDefs.push({ x:ix-14.5, z:jz-16.5, a:Math.PI,     g:0 });  // traffico verso +z (marciapiede di destra)
-    tlDefs.push({ x:ix+14.5, z:jz+16.5, a:0,           g:0 });  // verso -z
-    tlDefs.push({ x:ix-16.5, z:jz+14.5, a:-Math.PI/2,  g:1 });  // verso +x
-    tlDefs.push({ x:ix+16.5, z:jz-14.5, a:Math.PI/2,   g:1 });  // verso -x
+    tlDefs.push({ x:ix+14.5, z:jz-16.5, a:Math.PI,     g:0 });  // traffico verso +z (angolo marciapiede)
+    tlDefs.push({ x:ix-14.5, z:jz+16.5, a:0,           g:0 });  // verso -z
+    tlDefs.push({ x:ix-16.5, z:jz-14.5, a:-Math.PI/2,  g:1 });  // verso +x
+    tlDefs.push({ x:ix+16.5, z:jz+14.5, a:Math.PI/2,   g:1 });  // verso -x
   }
-  const tlPoleGeo=new THREE.CylinderGeometry(0.10,0.14,6.3,10); tlPoleGeo.translate(0,3.15,0);
-  const tlHeadGeo=new THREE.BoxGeometry(0.60,1.45,0.38); tlHeadGeo.translate(-11.2,5.65,0);
+  const tlPoleGeo=new THREE.CylinderGeometry(0.08,0.11,4.6,8); tlPoleGeo.translate(0,2.3,0);
+  const tlHeadGeo=new THREE.BoxGeometry(0.46,1.10,0.26); tlHeadGeo.translate(0,4.05,0);
   const tlPoles=new THREE.InstancedMesh(tlPoleGeo, poleMat, tlDefs.length);
   const tlHeads=new THREE.InstancedMesh(tlHeadGeo,
     new THREE.MeshStandardMaterial({ color:0x15181d, roughness:.6 }), tlDefs.length);
@@ -1567,21 +1481,19 @@ function buildCity(){
   for(const g of [0,1]){
     tlMats[g]={ r:mkLampMat(0xff2a1a), y:mkLampMat(0xffb01a), g:mkLampMat(0x22e04a) };
     const cnt=tlDefs.filter(d=>d.g===g).length;
-    for(const [key,yy] of [['r',6.1],['y',5.65],['g',5.20]]){
-      const lg=new THREE.SphereGeometry(0.17,14,10); lg.scale(1,1,.4);lg.translate(-11.2,yy,0.22);
+    for(const [key,yy] of [['r',4.38],['y',4.05],['g',3.72]]){
+      const lg=new THREE.SphereGeometry(0.105,10,8); lg.translate(0,yy,0.15);
       lampSets[g+key]=new THREE.InstancedMesh(lg, tlMats[g][key], cnt);
     }
   }
-  const signalArmGeo=new THREE.BoxGeometry(11.4,.12,.12);signalArmGeo.translate(-5.6,6.35,0);
-  const signalArms=new THREE.InstancedMesh(signalArmGeo,poleMat,tlDefs.length);
   const gIdx={0:0,1:0};
   tlDefs.forEach((D,ix2)=>{
     M.makeRotationY(D.a); M.setPosition(D.x,0.3,D.z);
-    tlPoles.setMatrixAt(ix2,M); tlHeads.setMatrixAt(ix2,M);signalArms.setMatrixAt(ix2,M);
+    tlPoles.setMatrixAt(ix2,M); tlHeads.setMatrixAt(ix2,M);
     const k=gIdx[D.g]++;
     for(const key of ['r','y','g']) lampSets[D.g+key].setMatrixAt(k,M);
   });
-  group.add(tlPoles,tlHeads,signalArms);
+  group.add(tlPoles,tlHeads);
   for(const k in lampSets) group.add(lampSets[k]);
 
   /* --- AUTO PARCHEGGIATE lungo i cordoli (corpo+tettuccio+ruote instanced) --- */
@@ -1596,17 +1508,34 @@ function buildCity(){
     }
   }
   if(pkDefs.length){
-    // auto parcheggiate: stesse carrozzerie realistiche del traffico, ferme
-    const pkMats=makeCarMaterials(envTex); pkMats.head.emissiveIntensity=0; pkMats.tail.emissive.setHex(0x1a0000);   // luci spente
-    const pkFleet=new CarFleet(pkDefs.length, pkMats, { castShadow:!IS_TOUCH });
+    const pkBodyGeo=new THREE.BoxGeometry(1.76,0.55,4.15); pkBodyGeo.translate(0,0.58,0);
+    const pkCabGeo=new THREE.BoxGeometry(1.52,0.42,2.0);   pkCabGeo.translate(0,1.06,-0.12);
+    const pkWheelGeo=new THREE.CylinderGeometry(0.30,0.30,0.22,10); pkWheelGeo.rotateZ(Math.PI/2);
+    const pkBodyMat=new THREE.MeshStandardMaterial({ color:0xffffff, roughness:.32, metalness:.6,
+      envMap:envTex, envMapIntensity:.5 });
+    const pkCabMat=new THREE.MeshStandardMaterial({ color:0x171b22, roughness:.18, metalness:.6,
+      envMap:envTex, envMapIntensity:.6 });
+    const pkWheelMat=new THREE.MeshStandardMaterial({ color:0x14161a, roughness:.9 });
+    const pkBody=new THREE.InstancedMesh(pkBodyGeo, pkBodyMat, pkDefs.length);
+    const pkCab=new THREE.InstancedMesh(pkCabGeo, pkCabMat, pkDefs.length);
+    const pkWheel=new THREE.InstancedMesh(pkWheelGeo, pkWheelMat, pkDefs.length*4);
+    const PKC=[0x8a8f96,0x32363c,0x7a1f24,0x274a7a,0xd8d3c4,0x4c5a3f,0xb0872e,0x1d6b6b,0xe8c23a];
+    const PQ=new THREE.Quaternion(), PU=new THREE.Vector3(0,1,0), PV=new THREE.Vector3(), PM2=new THREE.Matrix4();
     pkDefs.forEach((P,ix)=>{
-      pkFleet.set(ix,P.x,0.02,P.z,P.a,0,0,Math.random()*6.28,0,0,0);
+      PQ.setFromAxisAngle(PU,P.a);
+      IM.compose(PV.set(P.x,0.02,P.z).clone(), PQ, new THREE.Vector3(1,1,1));
+      pkBody.setMatrixAt(ix,IM); pkCab.setMatrixAt(ix,IM);
+      pkBody.setColorAt(ix, IC.set(PKC[Math.floor(Math.random()*PKC.length)]));
+      [[-0.86,1.32],[0.86,1.32],[-0.86,-1.38],[0.86,-1.38]].forEach(([wx,wz],wi)=>{
+        PM2.makeTranslation(wx,0.30,wz); PM2.premultiply(IM);
+        pkWheel.setMatrixAt(ix*4+wi,PM2);
+      });
       const along=Math.abs(Math.sin(P.a))<0.5;          // true: auto lungo z
       const hx=along?0.95:2.15, hz=along?2.15:0.95;
       colliders.push({ minx:P.x-hx, maxx:P.x+hx, minz:P.z-hz, maxz:P.z+hz });
     });
-    pkFleet.commit();
-    group.add(pkFleet.group);
+    pkBody.castShadow=true; pkCab.castShadow=true;
+    group.add(pkBody,pkCab,pkWheel);
   }
 
   // muri perimetrali
@@ -1626,9 +1555,9 @@ function buildCity(){
         if(Math.abs(x-p.x)<33&&Math.abs(z-p.z)<33) return { grip:0.62, roll:7, dust:true };
       return { grip:1.0, roll:1.0, dust:false };
     },
-    start:{ x:-51.3, z:-265, h:0 },
+    start:{ x:-44.7, z:-265, h:0 },
     asphaltMats:[asphaltMat, dash.material], neonMats, winMats, adMats,
-    lampGlow, lampHeadMat, streets:centers6, tlMats, parks:parkList, pedBlocks, treeSpots, oldTrees, waterTime
+    lampGlow, lampHeadMat, streets:centers6, tlMats, parks:parkList, pedBlocks
   };
 }
 
@@ -1661,34 +1590,32 @@ function buildCoast(){
       const a=samples[(i+NS-1)%NS], b=samples[(i+1)%NS];
       samples[i].y=samples[i].y*0.6+(a.y+b.y)*0.2;
     }
-  // la strada non scende mai sotto il mare (livello -1.6): minimo +1.2 m con raccordo morbido
-  // (softplus), così i tratti bassi diventano una strada su argine invece di finire sott'acqua
-  { const floor=-0.4, k=0.8;
-    for(const sm of samples) sm.y=floor+k*Math.log1p(Math.exp((sm.y-floor)/k));
-    for(let pass=0;pass<6;pass++) for(let i=0;i<NS;i++){ const a2=samples[(i+NS-1)%NS], b2=samples[(i+1)%NS]; samples[i].y=samples[i].y*0.6+(a2.y+b2.y)*0.2; } }
   for(let i=0;i<NS;i++){
     const nx=samples[(i+1)%NS];
     const dx=nx.x-samples[i].x, dz=nx.z-samples[i].z, len=Math.hypot(dx,dz)||1;
     samples[i].dx=dx/len; samples[i].dz=dz/len;
   }
 
-  const segmentGrid=new Map(),cellSize=32;
-  for(let i=0;i<NS;i++){
-    const a=samples[i],b=samples[(i+1)%NS];
-    for(let gx=Math.floor((Math.min(a.x,b.x)-32)/cellSize);gx<=Math.floor((Math.max(a.x,b.x)+32)/cellSize);gx++)
-      for(let gz=Math.floor((Math.min(a.z,b.z)-32)/cellSize);gz<=Math.floor((Math.max(a.z,b.z)+32)/cellSize);gz++){
-        const key=gx+','+gz;if(!segmentGrid.has(key))segmentGrid.set(key,[]);segmentGrid.get(key).push(i);
-      }
-  }
-  const allSegments=Array.from({length:NS},(_,i)=>i);
   function roadNear(x,z){
-    const candidates=segmentGrid.get(Math.floor(x/cellSize)+','+Math.floor(z/cellSize))||allSegments;
-    let best=Infinity,result;
-    for(const i of candidates){const a=samples[i],b=samples[(i+1)%NS],ex=b.x-a.x,ez=b.z-a.z;
-      const t=clamp(((x-a.x)*ex+(z-a.z)*ez)/(ex*ex+ez*ez),0,1),px=a.x+ex*t,pz=a.z+ez*t,d=(x-px)**2+(z-pz)**2;
-      if(d<best){best=d;result={d:Math.sqrt(d),y:lerp(a.y,b.y,t),i,t,x:px,z:pz};}
+    let best=1e9, bi=0;
+    for(let i=0;i<NS;i++){
+      const dx=x-samples[i].x, dz=z-samples[i].z, d=dx*dx+dz*dz;
+      if(d<best){ best=d; bi=i; }
     }
-    return result;
+    /* proiezione sui due segmenti adiacenti al campione più vicino:
+       distanza e quota INTERPOLATE lungo la strada. Senza, la quota
+       saltava a gradini di ~0.8 m ogni 4.5 m sui saliscendi (auto che
+       sbatteva di continuo: era questo a rendere la costa inguidabile). */
+    let bd=Math.sqrt(best), by=samples[bi].y;
+    for(const i0 of [(bi+NS-1)%NS, bi]){
+      const a=samples[i0], b=samples[(i0+1)%NS];
+      const ex=b.x-a.x, ez=b.z-a.z, L2=ex*ex+ez*ez||1;
+      const t=clamp(((x-a.x)*ex+(z-a.z)*ez)/L2, 0, 1);
+      const px=a.x+ex*t, pz=a.z+ez*t;
+      const dd=Math.hypot(x-px,z-pz);
+      if(dd<=bd+1e-6){ bd=dd; by=a.y+(b.y-a.y)*t; }
+    }
+    return { d:bd, y:by, i:bi };
   }
   /* spalla piana fino a 8.4 m dal centro (l'asfalto non viene mai sepolto
      dal terreno), poi raccordo smoothstep in 18 m. Due quote diverse:
@@ -1706,43 +1633,46 @@ function buildCoast(){
   }
   function terrainY(x,z){
     const b=roadBlend(x,z);
-    return lerp(terrBase(x,z), b.r.y-.45, b.s);
+    return lerp(terrBase(x,z), b.r.y+0.005, b.s);
   }
 
   // --- terreno con vertex color (griglia più fitta: risolve il corridoio strada) ---
   const SEG=IS_TOUCH?128:168, SIZE=1400;
   const tg=new THREE.PlaneGeometry(SIZE,SIZE,SEG,SEG); tg.rotateX(-Math.PI/2);
-  const pa=tg.attributes.position;
-  for(let i=0;i<pa.count;i++) pa.setY(i,terrainY(pa.getX(i),pa.getZ(i)));
-  tg.computeVertexNormals();
-  // pesi sabbia / prato / roccia: quota (spiaggia sotto 1.5 m) e pendenza (roccia sulle scarpate)
-  const na=tg.attributes.normal, splat=new Float32Array(pa.count*3);
+  const pa=tg.attributes.position, colors=new Float32Array(pa.count*3);
+  const cSand=new THREE.Color(0xd9c896),
+        cGrass=new THREE.Color(0x4e7a3a), cRock=new THREE.Color(0x77716a), tmp=new THREE.Color();
   for(let i=0;i<pa.count;i++){
-    const h=pa.getY(i), ny=na.getY(i);
-    const sand=clamp((1.9-h)/0.8,0,1);
-    const rock=Math.max(clamp((h-12)/16,0,1)*0.6, clamp((0.86-ny)/0.14,0,1))*(1-sand);
-    splat.set([sand, Math.max(0,1-sand-rock), rock], i*3);
+    const x=pa.getX(i), z=pa.getZ(i), h=terrainY(x,z);
+    pa.setY(i,h);
+    if(h<1.5) tmp.copy(cSand);
+    else if(h<16) tmp.copy(cGrass).lerp(cRock, clamp((h-10)/14,0,1)*0.4);
+    else tmp.copy(cGrass).lerp(cRock, clamp((h-14)/16,0,1));
+    tmp.multiplyScalar(0.95+Math.random()*0.10);      // screziatura: prato meno "plastica"
+    colors.set([tmp.r,tmp.g,tmp.b], i*3);
   }
-  tg.setAttribute('aSplat', new THREE.BufferAttribute(splat,3));
-  const terr=new THREE.Mesh(tg, terrainSplatMaterial([
-    { id:'coast_sand_01', size:15 }, { id:'aerial_grass_rock', size:15 }, { id:'rock_face_03', size:5.4 } ]));
+  tg.setAttribute('color', new THREE.BufferAttribute(colors,3));
+  tg.computeVertexNormals();
+  const terr=new THREE.Mesh(tg, new THREE.MeshStandardMaterial({ vertexColors:true, roughness:1 }));
   terr.receiveShadow=true; group.add(terr);
 
-  // --- mare (ocean.js): onde nello shader, colore e schiuma dalla profondità reale del fondale ---
-  const waterTime={value:0}, WATER_Y=-1.6, OB=[-800,-800,800,800];
-  const depthTex=makeDepthTexture((x,z)=>terrainY(x,z), WATER_Y, OB, IS_TOUCH?128:192);
-  const oceanMat=makeWaterMaterial({ time:waterTime, depthTex, bounds:OB });
+  // --- oceano: onde animate vicino a riva + piano piatto fino all'orizzonte ---
+  const oceanMat=new THREE.MeshStandardMaterial({ color:0x1a5f8a, roughness:.22, metalness:.5 });
   const OSEG=IS_TOUCH?40:72;
   const og=new THREE.PlaneGeometry(1600,1600,OSEG,OSEG); og.rotateX(-Math.PI/2);
   const oceanNear=new THREE.Mesh(og, oceanMat);
-  oceanNear.position.y=WATER_Y; oceanNear.receiveShadow=true; group.add(oceanNear);
-  // mare aperto fino all'orizzonte: anello attorno al riquadro vicino (niente sovrapposizione in trasparenza)
-  const farShape=new THREE.Shape([new THREE.Vector2(-3500,-3500),new THREE.Vector2(3500,-3500),new THREE.Vector2(3500,3500),new THREE.Vector2(-3500,3500)]);
-  farShape.holes.push(new THREE.Path([new THREE.Vector2(-799,-799),new THREE.Vector2(-799,799),new THREE.Vector2(799,799),new THREE.Vector2(799,-799)]));
-  const fg=new THREE.ShapeGeometry(farShape); fg.rotateX(-Math.PI/2);
-  const oceanFar=new THREE.Mesh(fg, makeWaterMaterial({ time:waterTime, foam:false, opacityShallow:false }));
-  oceanFar.position.y=WATER_Y; group.add(oceanFar);
-  oceanMat.addEventListener('dispose',()=>depthTex.dispose());   // la mappa di profondità segue il mondo
+  oceanNear.position.y=-1.6; group.add(oceanNear);
+  const oceanFar=new THREE.Mesh(new THREE.PlaneGeometry(7000,7000), oceanMat);
+  oceanFar.rotation.x=-Math.PI/2; oceanFar.position.y=-1.9; group.add(oceanFar);
+  const waterTime={value:0};
+  oceanNear.material=oceanMat;
+  oceanFar.material=oceanMat.clone();
+  oceanMat.onBeforeCompile=shader=>{
+    shader.uniforms.waterTime=waterTime;
+    shader.vertexShader='uniform float waterTime;\n'+shader.vertexShader;
+    shader.vertexShader=shader.vertexShader.replace('#include <beginnormal_vertex>',`vec3 objectNormal=normalize(vec3(-.020*cos(position.x*.09+waterTime),1.,-.017*cos(position.z*.075+waterTime*.8)));`);
+    shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>',`vec3 transformed=position;transformed.y+=.22*sin(position.x*.09+waterTime)+.22*sin(position.z*.075+waterTime*.8);`);
+  };
   const oceanBase=og.attributes.position.array.slice(); // posizioni a riposo per l'animazione
 
   // --- nastro stradale ---
@@ -1882,7 +1812,7 @@ function buildCoast(){
 
   /* --- VEGETAZIONE E ROCCE (tutto instanced: bosco fitto a costo di 2 draw call) --- */
   const SM=new THREE.Matrix4(), SV=new THREE.Vector3(), CV=new THREE.Color();
-  const NPINE=IS_TOUCH?200:440;   // ulivi (impostori): costano quasi nulla, se ne mettono di più
+  const NPINE=IS_TOUCH?170:300;
   const pTrunkGeo=new THREE.CylinderGeometry(.17,.30,4.8,6); pTrunkGeo.translate(0,2.4,0);
   const pCrownGeo=new THREE.ConeGeometry(2.25,5.4,7);        pCrownGeo.translate(0,6.6,0);
   const pTrunks=new THREE.InstancedMesh(pTrunkGeo,
@@ -1902,11 +1832,6 @@ function buildCoast(){
   }
   pTrunks.count=pi; pCrowns.count=pi; pCrowns.castShadow=true;
   group.add(pTrunks,pCrowns);
-  // ulivi fotogrammetrici al posto dei pini a cono (stesse posizioni)
-  const treeSpots={ island1:[], island2:[] };
-  for(let k=0;k<pi;k++){ pTrunks.getMatrixAt(k,SM); SV.setFromMatrixPosition(SM);
-    (Math.random()<0.5?treeSpots.island1:treeSpots.island2).push({ x:SV.x, y:SV.y+0.1, z:SV.z, h:rnd(4.5,7.5) }); }
-  const oldTrees=[pTrunks,pCrowns];
 
   /* --- PALME lungo la spiaggia: tronco inclinato + corona di foglie --- */
   const palmSpots=[];
@@ -2077,7 +2002,7 @@ function buildCoast(){
     },
     start:{ x:s0.x, z:s0.z, h:Math.atan2(s0.dx,s0.dz) },
     asphaltMats:[asphaltMat], neonMats:[], winMats:[lampMat], oceanMat, cloudMat,
-    ocean:{ geo:og, base:oceanBase, time:waterTime }, boats, treeSpots, oldTrees
+    ocean:{ geo:og, base:oceanBase, time:waterTime }, boats
   };
 }
 
@@ -2113,7 +2038,6 @@ class Car {
     this.cfg=cfg;
     this.pos=new THREE.Vector3();
     this.vel=new THREE.Vector3();          // velocita' nel mondo (x,z)
-    this.rideY=0;this.previousRideY=0;this.verticalSpeed=0;this.contact=true;this.rideInitialized=false;
     this.heading=0; this.yawRate=0;this.previousPos=new THREE.Vector3();this.previousHeading=0;
     this.steer=0; this.throttle=0;
     this.gear='D'; this.revT=0;
@@ -2131,15 +2055,14 @@ class Car {
     this.headMat=new THREE.MeshStandardMaterial({ color:0xfff6d8, emissive:0xfff2c0, emissiveIntensity:.4 });
     this.tailMat=new THREE.MeshStandardMaterial({ color:0x550000, emissive:0xff2020, emissiveIntensity:.5 });
 
-    if(c.build) c.build(this);   // veicoli esterni (volanti): corpo + ruote propri
-    else if(c.id==='falcone') buildGrandTourer(this);
+    if(c.id==='falcone') buildGrandTourer(this);
     else if(c.id==='fuoco') this.buildF1();
     else if(c.id==='brutus') this.buildMuscle();
     else this.buildEV();
 
     // proiettori reali (accesi di notte / nebbia)
     this.headlights=[];
-    if(!c.noHeadlights) [[-0.5],[0.5]].forEach(([sx])=>{
+    [[-0.5],[0.5]].forEach(([sx])=>{
       const sp=new THREE.SpotLight(0xfff3cf, 0, 130, 0.46, 0.45, 1.0);
       sp.position.set(sx, b.clearance+b.h*.62, b.l/2);
       const tgt=new THREE.Object3D(); tgt.position.set(sx*1.6, -0.6, 35);
@@ -2147,7 +2070,7 @@ class Car {
       this.headlights.push(sp);
     });
 
-    if(!c.build) this.buildWheels();
+    this.buildWheels();
     detailVehicle(this);
     // neon sottoscocca: alone additivo a terra, intensità gestita da applyEnvironment
     this.glowMat=new THREE.MeshBasicMaterial({ map:smokeTex, color:b.neon||0x2de2ff,
@@ -2425,70 +2348,145 @@ class Car {
   reset(x,z,h){
     this.pos.set(x,0,z); this.vel.set(0,0,0);
     this.heading=h; this.previousHeading=h;this.previousPos.copy(this.pos);this.yawRate=0; this.steer=0; this.throttle=0;
-    this.gear='D';this.revT=0;this.vz=0;this.vx=0;this.slipF=0;this.slipR=0;this.spin=0;this.impacts.length=0;this.rideInitialized=false;this.verticalSpeed=0; this.longSmooth=0; this.latSmooth=0;
-    if(this.dyn) this.dyn.reset();
+    this.gear='D'; this.longSmooth=0; this.latSmooth=0;
   }
 
   update(dt, W){
     this.previousPos.copy(this.pos);this.previousHeading=this.heading;
     const c=this.cfg;
-    const roadY=W.height(this.pos.x,this.pos.z);
-    if(!this.rideInitialized){this.rideY=roadY;this.previousRideY=roadY;this.rideInitialized=true;}
-    this.previousRideY=this.rideY;
     const fwd={ x:Math.sin(this.heading), z:Math.cos(this.heading) };
     const right={ x:fwd.z, z:-fwd.x };
     let vz=this.vel.x*fwd.x+this.vel.z*fwd.z;   // velocita' longitudinale
     let vx=this.vel.x*right.x+this.vel.z*right.z; // velocita' laterale
 
-    /* --- input: erogazione progressiva del gas (volanti AI: this.input/this.pad) --- */
-    const K=this.input||keys, P=this.pad||pad;
-    const thrT=K.up?1:P.gas;
+    /* --- input: erogazione progressiva del gas --- */
+    const thrT=keys.up?1:pad.gas;
     // EV: coppia istantanea (rampa rapida); termico: erogazione piu' dolce
     this.throttle=approach(this.throttle, thrT, dt*(thrT>this.throttle ? (c.ev?5:2.4) : 8));
-    const brake=K.down||P.brake>.05, handbrake=K.space||P.handbrake;
+    const brake=keys.down||pad.brake>.05, handbrake=keys.space||pad.handbrake;
 
     /* --- cambio marcia avanti/retro --- */
-    if(!this.input&&toggleGearReq){ toggleGearReq=false;
+    if(toggleGearReq){ toggleGearReq=false;
       if(Math.abs(vz)<3){ this.gear=this.gear==='D'?'R':'D'; toast(this.gear==='R'?'RETROMARCIA':'MARCIA AVANTI'); } }
     const totSpeed=Math.hypot(this.vel.x,this.vel.z);
     if(this.gear==='D'){
       // retro automatica solo da fermo davvero (no durante derapate/testacoda)
-      if(brake && Math.abs(vz)<0.5 && totSpeed<1.5){ this.revT+=dt; if(this.revT>0.65){ this.gear='R'; this.revT=0; } }
+      if(brake && Math.abs(vz)<0.5 && totSpeed<1.5){ this.revT+=dt; if(this.revT>0.25){ this.gear='R'; this.revT=0; } }
       else this.revT=0;
-    } else if((K.up||P.gas>.05) && Math.abs(vz)<0.5) this.gear='D';
+    } else if((keys.up||pad.gas>.05) && Math.abs(vz)<0.5) this.gear='D';
 
     /* --- sterzo: sensibilita' scalata con la velocita' (anti-testacoda) --- */
     const sp=Math.abs(vz);
     const maxEff=c.maxSteer/(1+sp*sp*c.steerFade);
     // visto dalla camera (dietro l'auto, che guarda +z) lo schermo-destra e' -x:
     // A (left) => sterzo verso +x = sinistra a schermo, D => -x = destra
-    let sT=clamp((K.left?1:0)-(K.right?1:0)+P.steer,-1,1)*maxEff;
+    let sT=clamp((keys.left?1:0)-(keys.right?1:0)+pad.steer,-1,1)*maxEff;
     const rate=c.steerSpeed*(sT===0?1.9:1.0);   // ritorno al centro piu' rapido
     this.steer=approach(this.steer, sT, rate*dt);
 
-    /* --- dinamica a 4 ruote (vehicle-physics.js): pneumatici Pacejka, sospensioni,
-       motore e cambio reali; aiuti (ABS/TC/ESC) salvo richiesta del giocatore --- */
-    if(!this.dyn) this.dyn=new VehicleDynamics(c);
-    this.dyn.assists=!!this.input||state.assists!==false;          // le volanti guidano sempre con gli aiuti
-    const rev=this.gear==='R';
-    const pedalBrake=brake?(K.down?1:P.brake):0, pedalGas=K.up?1:P.gas;
-    const inp={ throttle:rev?pedalBrake:this.throttle, brake:rev?pedalGas:pedalBrake, handbrake, steer:this.steer, reverse:rev, assists:this.dyn.assists };
-    const h1=W.height(this.pos.x+fwd.x*2, this.pos.z+fwd.z*2), h2=W.height(this.pos.x-fwd.x*2, this.pos.z-fwd.z*2);
-    const env={ height:W.height, surface:W.surface, gripMul:state.gripMul, slope:(h1-h2)/4 };
-    let res=null; for(let k=0;k<2;k++) res=this.dyn.step(this, dt/2, inp, env);
-    this.contact=res.contact; this.slipF=res.slipF; this.slipR=res.slipR; this.spin=res.spin;
-    const f2={ x:Math.sin(this.heading), z:Math.cos(this.heading) };
-    vz=this.vel.x*f2.x+this.vel.z*f2.z; vx=this.vel.x*f2.z-this.vel.z*f2.x;
+    /* --- superficie + meteo --- */
+    const surf=W.surface(this.pos.x,this.pos.z);
+    const gripW=state.gripMul;                  // pioggia: -40% attrito
+    const muF=c.muF*surf.grip*gripW;
+    let   muR=c.muR*surf.grip*gripW;
+    if(handbrake) muR*=0.35;                    // freno a mano: posteriore bloccato -> drift
 
-    // arresto totale: elimina micro-derive da fermi
-    if(Math.hypot(this.vel.x,this.vel.z)<0.15 && !K.up && P.gas<.05 && !(rev&&brake)){
-      this.vel.set(0,0,0); this.yawRate*=0.5; for(const w of this.dyn.wheels) w.omega=0;
+    /* --- forza motrice con curva di potenza --- */
+    let drive=0;
+    if(this.gear==='D'){
+      const s=Math.max(0,vz), top=c.topSpeed;
+      const curve=c.ev
+        ? (s<top*0.5 ? 1 : clamp(1-Math.pow((s-top*0.5)/(top*0.5),1.6),0,1))
+        : Math.max(0, 1-Math.pow(s/top,2.4));
+      drive=this.throttle*c.engineForce*curve;
+      if(vz>=top) drive=0;
+    } else if(brake){
+      drive=-c.engineForce*0.5*clamp(1-(-vz)/13,0,1); // retro limitata a ~45 km/h
     }
-    this.longSmooth=lerp(this.longSmooth, this.dyn.aLong, clamp(dt*5,0,1));
-    this.latSmooth=lerp(this.latSmooth, this.dyn.aLat, clamp(dt*5,0,1));
-    this.vz=vz; this.vx=vx; this.handbrake=handbrake;
-    this.braking=pedalBrake>0.05&&!rev || (c.ev&&this.throttle<0.05&&vz>2);
-    this.engineRpm=this.dyn.rpm; this.gearNum=this.dyn.gearNum;
+
+    /* --- freni --- */
+    let brakeF=0;
+    if(this.gear==='D' && brake && vz>0.3) brakeF=c.brakeForce*(keys.down?1:pad.brake);
+    if(this.gear==='R' && (keys.up||pad.gas>.05) && vz<-0.3) brakeF=c.brakeForce;
+    if(c.ev && this.throttle<0.05 && vz>2 && !brake) brakeF+=c.mass*1.3;  // rigenerativa al rilascio
+
+    /* --- resistenze + pendenza --- */
+    const h1=W.height(this.pos.x+fwd.x*2, this.pos.z+fwd.z*2);
+    const h2=W.height(this.pos.x-fwd.x*2, this.pos.z-fwd.z*2);
+    const slope=(h1-h2)/4;
+    const drag=c.drag*vz*Math.abs(vz)+c.rollRes*surf.roll*vz;
+    let Flong=drive - Math.sign(vz)*brakeF - drag - c.mass*9.81*slope;
+
+    /* --- TRASFERIMENTO DI CARICO (cuore del feeling GTA) ---
+       In accelerazione il peso va sul posteriore (piu' trazione, meno
+       sterzo => sottosterzo di potenza); in frenata va sull'anteriore
+       (il posteriore si alleggerisce => sovrasterzo in staccata).     */
+    const L=c.wheelBase, m=c.mass;
+    const transfer=clamp(m*this.longSmooth*c.cgH/L, -m*4.2, m*4.2);
+    /* --- DOWNFORCE (F1): carico aerodinamico cresce col quadrato della
+       velocita' -> piu' vai forte, piu' grip hai (curve "sui binari") --- */
+    const df=(c.df||0)*vz*vz;
+    const loadF=Math.max(m*9.81*c.bDist/L - transfer + df*0.42, m*1.4);
+    const loadR=Math.max(m*9.81*c.aDist/L + transfer + df*0.58, m*1.4);
+
+    /* --- angoli di deriva (slip angle) --- */
+    const vzA=Math.max(Math.abs(vz),0.8);
+    const slipF=Math.atan2(vx+this.yawRate*c.aDist, vzA)-this.steer*Math.sign(vz||1);
+    const slipR=Math.atan2(vx-this.yawRate*c.bDist, vzA);
+    this.slipF=slipF; this.slipR=slipR;
+
+    /* --- limite di trazione (wheelspin): la gomma non puo' scaricare
+       piu' forza di mu*carico; l'eccesso di coppia "slitta" e basta --- */
+    const tracCap=(c.drive==='A' ? muF*loadF+muR*loadR : muR*loadR)*0.98;
+    // pattinamento: quanta coppia eccede l'aderenza (per burnout: fumo/segni/stridio)
+    this.spin=tracCap>1 ? clamp((Math.abs(drive)-tracCap)/tracCap, 0, 1) : 0;
+    if(Math.abs(drive)>tracCap) drive=Math.sign(drive)*tracCap;
+    /* --- anche il freno e' limitato dall'aderenza: sul bagnato (mu -40%)
+       gli spazi di frenata si allungano di conseguenza --- */
+    const brakeCap=(muF*loadF+muR*loadR)*0.85;
+    if(brakeF>brakeCap) brakeF=brakeCap;
+    Flong=drive - Math.sign(vz)*brakeF - drag - c.mass*9.81*slope;
+
+    /* --- forze laterali con CERCHIO D'ATTRITO: piu' forza longitudinale
+       (coppia O freno) scarichi, meno grip laterale resta =>
+       power oversteer in uscita, sovrasterzo in staccata --- */
+    const tracR=((c.drive!=='F') ? Math.abs(drive)*(c.drive==='A'?0.5:1) : 0)+brakeF*0.4;
+    const tracF=((c.drive==='A') ? Math.abs(drive)*0.5 : 0)+brakeF*0.6;
+    const FyFmax=Math.sqrt(Math.max(0,(muF*loadF)**2-(tracF*0.68)**2));
+    const FyRmax=Math.sqrt(Math.max(0,(muR*loadR)**2-(tracR*0.68)**2));
+    const FyF=-FyFmax*Math.tanh(c.stiffF*slipF*loadF/Math.max(1,FyFmax));
+    const FyR=-FyRmax*Math.tanh(c.stiffR*slipR*loadR/Math.max(1,FyRmax));
+
+    if(handbrake && Math.abs(vz)>0.5) Flong-=Math.sign(vz)*muR*loadR*0.6; // gomme post. bloccate
+
+    /* --- integrazione --- */
+    const az=Flong/m, ax=(FyF*Math.cos(this.steer)+FyR)/m;
+    this.vel.x+=(fwd.x*az+right.x*ax)*dt;
+    this.vel.z+=(fwd.z*az+right.z*ax)*dt;
+
+    // imbardata: momento dato dalle forze sugli assi
+    const tq=FyF*Math.cos(this.steer)*c.aDist - FyR*c.bDist;
+    this.yawRate+=tq/this.Iz*dt;
+    this.yawRate*=1/(1+0.35*dt);   // lieve smorzamento: derapate controllabili
+
+    // a bassa velocita' fonde col modello cinematico (manovre stabili da fermo)
+    const ls=clamp(Math.abs(vz)/4,0,1);
+    const kin=(vz/L)*Math.tan(this.steer);
+    this.yawRate=lerp(kin,this.yawRate,ls);
+    const damp=(1-ls)*6*dt;
+    this.vel.x-=right.x*vx*damp; this.vel.z-=right.z*vx*damp;
+
+    this.heading+=this.yawRate*dt;
+    this.pos.x+=this.vel.x*dt; this.pos.z+=this.vel.z*dt;
+
+    // arresto totale: elimina micro-derive
+    if(Math.hypot(this.vel.x,this.vel.z)<0.15 && !keys.up && pad.gas<.05 && !(this.gear==='R'&&brake)){
+      this.vel.set(0,0,0); this.yawRate*=0.5;
+    }
+
+    this.longSmooth=lerp(this.longSmooth, az, clamp(dt*5,0,1));
+    this.latSmooth=lerp(this.latSmooth, ax, clamp(dt*5,0,1));
+    this.vz=vz; this.vx=vx; this.braking=brakeF>0; this.handbrake=handbrake;
 
     /* --- collisioni --- */
     // Oriented body against the city's axis-aligned obstacles (separating-axis test).
@@ -2526,8 +2524,7 @@ class Car {
   syncMesh(dt, W, alpha=1){
     this.group.position.lerpVectors(this.previousPos,this.pos,alpha);
     const gy=W.height(this.group.position.x,this.group.position.z);
-    if(!this.rideInitialized){this.rideY=gy;this.previousRideY=gy;this.rideInitialized=true;}
-    this.group.position.y=Math.max(gy-.07,lerp(this.previousRideY,this.rideY,alpha));
+    this.group.position.y=gy;
 
     // normale del terreno da 3 campioni
     const e=2.0;
@@ -2539,25 +2536,15 @@ class Car {
     const rightV=new THREE.Vector3().crossVectors(up,fwd);
     const M=new THREE.Matrix4().makeBasis(rightV,up,fwd);
     const q=new THREE.Quaternion().setFromRotationMatrix(M);
-    this.group.quaternion.slerp(q,1-Math.exp(-dt*18));
+    this.group.quaternion.slerp(q, clamp(dt*8,0,1));
 
     // weight transfer visivo: beccheggio in frenata/accel., rollio in curva
-    if(this.dyn){ this.chassis.rotation.x=this.dyn.pitch; this.chassis.rotation.z=this.dyn.roll; }
-    else {
-      this.chassis.rotation.x=lerp(this.chassis.rotation.x, clamp(-this.longSmooth*0.011,-.09,.09), clamp(dt*6,0,1));
-      this.chassis.rotation.z=lerp(this.chassis.rotation.z, clamp(this.latSmooth*0.011,-.10,.10), clamp(dt*6,0,1));
-    }
+    this.chassis.rotation.x=lerp(this.chassis.rotation.x, clamp(-this.longSmooth*0.011,-.09,.09), clamp(dt*6,0,1));
+    this.chassis.rotation.z=lerp(this.chassis.rotation.z, clamp(this.latSmooth*0.011,-.10,.10), clamp(dt*6,0,1));
 
-    const spin=this.vz/(this.wheelSpinR||this.cfg.body.wheelR)*dt;
-    if(this.dyn) this.wheels.forEach(w=>{      // ogni ruota gira alla sua velocità: pattinamenti e bloccaggi visibili
-      const hp=w.parent.position, dw=this.dyn.wheels.find(q=>q.front===(hp.z>0)&&Math.sign(q.l)===Math.sign(hp.x||1));
-      w.rotation.x+=dw?dw.omega*dt*(dw.R/(this.wheelSpinR||dw.R)):spin; });
-    else this.wheels.forEach(w=>w.rotation.x+=spin);
-    this.frontPivots.forEach(p=>{
-      const radius=(this.wheelBaseVis||this.cfg.wheelBase)/Math.max(.001,Math.abs(Math.tan(this.steer)));
-      // Ackermann col passo delle ruote visibili; ruota interna limitata a ~38° come su un'auto reale
-      p.rotation.y=Math.sign(this.steer)*Math.min(0.66,Math.atan((this.wheelBaseVis||this.cfg.wheelBase)/Math.max(.5,radius-Math.sign(this.steer)*p.position.x)));
-    });
+    const spin=this.vz/this.cfg.body.wheelR*dt;
+    this.wheels.forEach(w=>w.rotation.x+=spin);
+    this.frontPivots.forEach(p=>p.rotation.y=this.steer);
 
     // luci freno
     this.tailMat.emissiveIntensity=this.braking?2.6:(state.time==='night'?1.2:0.5);
@@ -2574,14 +2561,19 @@ class Car {
    0 = verde, 1 = giallo, 2 = rosso
 ===================================================================== */
 let simTime=0;
-function lightPhase(group){return signalState(simTime,group).code;}
+function lightPhase(group){
+  const T=simTime%16;
+  const ns=T<6.5?0 : T<8?1 : 2;
+  const ew=T<8?2 : T<14.5?0 : 1;
+  return group===0?ns:ew;
+}
 function updateLightMats(){
   if(!world||!world.tlMats) return;
   for(const g of [0,1]){
     const ph=lightPhase(g), m=world.tlMats[g];
-    m.r.emissiveIntensity=ph===2?6:0.015;
-    m.y.emissiveIntensity=ph===1?6:0.015;
-    m.g.emissiveIntensity=ph===0?6:0.015;
+    m.r.emissiveIntensity=ph===2?2.4:0.08;
+    m.y.emissiveIntensity=ph===1?2.4:0.08;
+    m.g.emissiveIntensity=ph===0?2.4:0.08;
   }
 }
 
@@ -2593,10 +2585,8 @@ class Traffic {
   constructor(world, n=14){
     this.world=world; this.cars=[];
     this.group=new THREE.Group(); scene.add(this.group);
-    // auto realistiche disegnate a istanze (traffic-cars.js): la logica resta qui
-    this.mats=makeCarMaterials(envTex);
-    this.fleet=new CarFleet(n,this.mats,{ castShadow:!IS_TOUCH });
-    this.group.add(this.fleet.group);
+    this.headMat=new THREE.MeshStandardMaterial({ color:0xfff2cc, emissive:0xfff2c0, emissiveIntensity:.3 });
+    this.tailMat=new THREE.MeshStandardMaterial({ color:0x551111, emissive:0xff2020, emissiveIntensity:.4 });
     if(world.id==='coast'){
       this.segs=[];
       const S=world.samples;
@@ -2607,34 +2597,43 @@ class Traffic {
     }
     const COL=[0x8a8f96,0x32363c,0x7a1f24,0x274a7a,0xd8d3c4,0x4c5a3f,0x9c7b3a,0x1d6b6b];
     for(let k=0;k<n;k++){
-      const c=this.makeMesh();
+      const c=this.makeMesh(COL[k%COL.length]);
       if(world.id==='city') this.initCity(c); else this.initCoast(c,k,n);
       this.cars.push(c);
     }
-    this.syncFleet(0);
   }
-  makeMesh(){
-    // solo stato logico: il disegno è della flotta instanced (this.fleet)
-    return { mesh:new THREE.Object3D(), pos:new THREE.Vector3(), heading:0, speed:0, cruise:rnd(7.5,10.5),
-             from:new THREE.Vector3(), to:new THREE.Vector3(), t:0, next:-1, spin:0, acc:0, prevSpeed:0, steerVis:0 };
-  }
-  // posa delle auto disegnate: ruote che girano e sterzano, beccheggio in frenata, stop e frecce
-  syncFleet(dt){
-    const W=this.world, F=this.fleet;
-    this.mats.shared.uTime.value=simTime;
-    this.cars.forEach((c,i)=>{
-      const t=F.type(i);
-      c.acc=lerp(c.acc,(c.speed-c.prevSpeed)/Math.max(dt,1e-3),clamp(dt*6,0,1)); c.prevSpeed=c.speed;
-      c.spin=(c.spin+c.speed*dt/t.wR)%(Math.PI*2);
-      let turn=0;
-      if(W.id==='city'&&c.next>=0&&c.next!==c.dir&&c.t>0.45){ const rel=(c.next-c.dir+4)%4; turn=rel===1?1:rel===3?-1:0; }
-      const brake=(c.speed<0.3||c.acc<-0.8)?1:0;
-      c.steerVis=lerp(c.steerVis,clamp(c.dhVis||0,-0.5,0.5),clamp(dt*8,0,1));
-      F.set(i,c.pos.x,W.height(c.pos.x,c.pos.z),c.pos.z,c.heading,clamp(-c.acc*0.006,-0.03,0.03),0,c.spin,c.steerVis,brake,turn);
+  makeMesh(color){
+    const g=new THREE.Group();
+    const b=new THREE.Mesh(new THREE.BoxGeometry(1.76,0.52,4.15),
+      new THREE.MeshStandardMaterial({ color, roughness:.4, metalness:.5 }));
+    b.position.y=0.55; b.castShadow=true; g.add(b);
+    const cab=new THREE.Mesh(new THREE.BoxGeometry(1.55,0.45,2.05),
+      new THREE.MeshStandardMaterial({ color:0x14181f, roughness:.2, metalness:.6 }));
+    cab.position.set(0,1.0,-0.15); g.add(cab);
+    for(const s of [-1,1]){
+      const hl=new THREE.Mesh(new THREE.BoxGeometry(.3,.12,.05), this.headMat);
+      hl.position.set(s*0.6,0.62,2.1); g.add(hl);
+      const tl=new THREE.Mesh(new THREE.BoxGeometry(.36,.11,.05), this.tailMat);
+      tl.position.set(s*0.58,0.62,-2.1); g.add(tl);
+    }
+    const bump=new THREE.MeshStandardMaterial({ color:0x1c1f24, roughness:.7 });
+    for(const z of [2.12,-2.12]){
+      const bp=new THREE.Mesh(new THREE.BoxGeometry(1.80,0.18,0.10), bump);
+      bp.position.set(0,0.38,z); g.add(bp);
+    }
+    const wg=new THREE.CylinderGeometry(0.31,0.31,0.24,12); wg.rotateZ(Math.PI/2);
+    const hub=new THREE.CylinderGeometry(0.16,0.16,0.26,10); hub.rotateZ(Math.PI/2);
+    const wm=new THREE.MeshStandardMaterial({ color:0x101216, roughness:.9 });
+    const hm=new THREE.MeshStandardMaterial({ color:0xaab0b8, roughness:.3, metalness:.8 });
+    [[-0.85,1.35],[0.85,1.35],[-0.85,-1.4],[0.85,-1.4]].forEach(([x,z])=>{
+      const w=new THREE.Mesh(wg,wm); w.position.set(x,0.31,z); g.add(w);
+      const h=new THREE.Mesh(hub,hm); h.position.set(x,0.31,z); g.add(h);
     });
-    F.commit();
+    this.group.add(g);
+    return { mesh:g, pos:new THREE.Vector3(), heading:0, speed:0, cruise:rnd(7.5,10.5),
+             from:new THREE.Vector3(), to:new THREE.Vector3(), t:0, next:-1 };
   }
-  laneOffset(di){ return [[-3.3,0],[0,3.3],[3.3,0],[0,-3.3]][di]; } // corsia destra (guida a destra)
+  laneOffset(di){ return [[3.3,0],[0,-3.3],[-3.3,0],[0,3.3]][di]; } // corsia destra
   validDir(ci,cj,di){
     const L=this.world.streets.length;
     const D=[[0,1],[1,0],[0,-1],[-1,0]][di];
@@ -2669,9 +2668,7 @@ class Traffic {
     c.mesh.position.copy(c.pos); c.mesh.rotation.y=c.heading;
   }
   initCoast(c,k,n){
-    const S=this.world.samples,N=S.length;c.idx=((k/n)*N+rnd(15,25))%N;c.sgn=k%2?1:-1;c.cruise=rnd(9,13);
-    const a=S[Math.floor(c.idx)];c.heading=Math.atan2(a.dx*c.sgn,a.dz*c.sgn);
-    c.pos.set(a.x-a.dz*c.sgn*3.5,this.world.height(a.x,a.z),a.z+a.dx*c.sgn*3.5);c.mesh.position.copy(c.pos);c.mesh.rotation.y=c.heading;
+    c.idx=(k/n)*600+rnd(0,20); c.sgn=k%2?1:-1; c.cruise=rnd(9,13);
   }
   update(dt, player){
     const W=this.world;
@@ -2686,52 +2683,41 @@ class Traffic {
         return d>1&&d<12&&lat<2.7;
       };
       if(blocked(player.pos.x,player.pos.z)) ts=0;
-      if(peds)for(const person of peds.peds)if(blocked(person.x,person.z)){ts=0;break;}
       for(const o of this.cars) if(o!==c&&blocked(o.pos.x,o.pos.z)){ ts=0; break; }
-      // sirena dietro: si rallenta e ci si accosta a destra per lasciar passare la volante
-      let yieldPol=false;
-      if(police)for(const u of police.units){
-        if(blocked(u.pos.x,u.pos.z)&&!u.siren){ts=0;break;}
-        if(!u.siren)continue;
-        const rx=u.pos.x-c.pos.x, rz=u.pos.z-c.pos.z, along=rx*fx+rz*fz;
-        if(along<-2&&along>-55&&Math.abs(rx*fz-rz*fx)<6){yieldPol=true;ts=Math.min(ts,3);}
-      }
-      c.pull=approach(c.pull||0,yieldPol?1:0,dt*1.2);
-
+      c.speed=approach(c.speed, ts, (ts<c.speed?14:4.5)*dt);
 
       let desired=c.heading;
       if(W.id==='city'){
         // semaforo: frena e fermati alla linea se non e' verde per il tuo asse
         const grp=(c.dir===0||c.dir===2)?0:1;
-        const stopT=1-19.6/c.legLen,remaining=(stopT-c.t)*c.legLen;
-        if(lightPhase(grp)!==0&&remaining>=-.05)ts=Math.min(ts,Math.sqrt(2*4.5*Math.max(0,remaining-.1)));
-        c.speed=approach(c.speed,ts,(ts<c.speed?5.5:2.5)*dt);
-        const oldT=c.t;c.t+=c.speed*dt/c.legLen;
-        if(lightPhase(grp)!==0&&oldT<=stopT&&c.t>=stopT){c.t=stopT;c.speed=0;}
+        const stopT=1-15.5/c.legLen;
+        if(lightPhase(grp)>0 && c.t>=stopT-0.25 && c.t<=stopT){
+          ts=c.t>stopT-0.06?0:Math.min(ts,3);
+          c.speed=approach(c.speed, ts, 14*dt);
+        }
+        c.t+=c.speed*dt/c.legLen;
+        if(lightPhase(grp)>0 && c.t>stopT && c.t<stopT+0.05){ c.t=stopT; c.speed=0; }
         if(c.t>0.7&&c.next<0) c.next=this.pickDir(c);
         if(c.t>=1){
           c.ci=c.ti; c.cj=c.tj;
           c.dir=c.next>=0?c.next:this.pickDir(c);
           this.setLeg(c, c.pos);
         } else c.pos.lerpVectors(c.from,c.to,c.t);
-        if(c.pull>0.01){ const D=[[0,1],[1,0],[0,-1],[-1,0]][c.dir]; c.pos.x-=D[1]*2.4*c.pull; c.pos.z+=D[0]*2.4*c.pull; } // accostamento
         desired=Math.atan2(c.to.x-c.from.x, c.to.z-c.from.z);
       } else {
         // costiera: segue i campioni della spline, corsia destra
-        c.speed=approach(c.speed,ts,(ts<c.speed?5.5:2.5)*dt);
         const S=W.samples, N=S.length;
         c.idx=(c.idx + c.sgn*c.speed*dt/this.segs[Math.floor(((c.idx%N)+N)%N)] + N)%N;
         const i0=Math.floor(c.idx), i1=(i0+1)%N, f=c.idx-i0;
         const a=S[i0], b=S[i1];
         const dx=lerp(a.dx,b.dx,f)*c.sgn, dz=lerp(a.dz,b.dz,f)*c.sgn;
-        const lane=3.5+1.9*(c.pull||0);        // offset a destra della marcia (strada da 14 m), più largo se si accosta
-        const ox=-dz*lane, oz=dx*lane;          // a destra del senso di marcia
+        const ox=dz*3.5, oz=-dx*3.5;            // offset a destra della marcia (strada da 14 m)
         c.pos.set(lerp(a.x,b.x,f)+ox, 0, lerp(a.z,b.z,f)+oz);
         desired=Math.atan2(dx,dz);
       }
       let dh=desired-c.heading;
       while(dh>Math.PI)dh-=2*Math.PI; while(dh<-Math.PI)dh+=2*Math.PI;
-      c.heading+=dh*Math.min(1,dt*5); c.dhVis=dh*1.6;
+      c.heading+=dh*Math.min(1,dt*5);
       c.mesh.position.set(c.pos.x, W.height(c.pos.x,c.pos.z), c.pos.z);
       c.mesh.rotation.y=c.heading;
 
@@ -2748,11 +2734,10 @@ class Traffic {
         c.speed*=0.3;
       }
     }
-    this.syncFleet(dt);
   }
   setNight(on){
-    this.mats.head.emissiveIntensity=on?2.6:0.3;
-    this.mats.shared.uNight.value=on?1:0;
+    this.headMat.emissiveIntensity=on?2.4:0.3;
+    this.tailMat.emissiveIntensity=on?1.6:0.4;
   }
   dispose(){
     scene.remove(this.group);
@@ -2772,56 +2757,116 @@ function rebuildTraffic(){
    scattano di lato se l'auto gli arriva addosso. Toggle HUD.
    Corpi low-poly in 6 InstancedMesh totali (torso/testa/gambe/braccia).
 ===================================================================== */
-let peds=null, crowdTypes=null;
+class Pedestrians {
+  constructor(world){
+    this.world=world;
+    this.group=new THREE.Group(); scene.add(this.group);
+    const defs=[];
+    const blocks=world.pedBlocks||[];                   // isolati con marciapiede percorribile
+    for(const B of blocks){
+      const cnt=(IS_TOUCH?1:2)+Math.floor(Math.random()*(IS_TOUCH?2:3));
+      for(let k=0;k<cnt;k++){
+        const R=rnd(31.3,32.8);                         // alberi a 30.5, lampioni a 33.5
+        defs.push({ bx:B.x, bz:B.z, R, s:Math.random()*8*R,
+                    dir:Math.random()<0.5?1:-1, speed:rnd(0.8,1.5), k:rnd(0.90,1.08),
+                    phase:rnd(0,6.28), runK:0, ox:0, oz:0, h:0 });
+      }
+    }
+    this.peds=defs;
+    const N=defs.length;
+    const mkMat=()=>new THREE.MeshStandardMaterial({ color:0xffffff, roughness:.85 });
+    const torsoGeo=new THREE.BoxGeometry(0.36,0.60,0.22); torsoGeo.translate(0,1.10,0);
+    const headGeo=new THREE.SphereGeometry(0.12,10,8);    headGeo.translate(0,1.56,0);
+    const legGeo=new THREE.BoxGeometry(0.14,0.80,0.16);   legGeo.translate(0,-0.40,0);  // perno all'anca
+    const armGeo=new THREE.BoxGeometry(0.10,0.58,0.12);   armGeo.translate(0,-0.29,0);  // perno alla spalla
+    this.parts={
+      torso:new THREE.InstancedMesh(torsoGeo, mkMat(), N),
+      head :new THREE.InstancedMesh(headGeo,  mkMat(), N),
+      legL :new THREE.InstancedMesh(legGeo,   mkMat(), N),
+      legR :new THREE.InstancedMesh(legGeo,   mkMat(), N),
+      armL :new THREE.InstancedMesh(armGeo,   mkMat(), N),
+      armR :new THREE.InstancedMesh(armGeo,   mkMat(), N)
+    };
+    const SHIRT=[0xc94f4f,0x4f7ac9,0x4fc98a,0xc9b44f,0x9a5fc9,0xd8d8d8,0x3a3f4a,0xe08a3c];
+    const PANTS=[0x2e3542,0x4a4038,0x39424e,0x5a5f68,0x274a32,0x6b3a3a];
+    const SKIN =[0xe8c39e,0xd9a878,0xb97d50,0x8a5a3a,0xf0d0b0];
+    const C=new THREE.Color();
+    defs.forEach((p,ix)=>{
+      C.set(SHIRT[Math.floor(Math.random()*SHIRT.length)]);
+      this.parts.torso.setColorAt(ix,C); this.parts.armL.setColorAt(ix,C); this.parts.armR.setColorAt(ix,C);
+      C.set(SKIN[Math.floor(Math.random()*SKIN.length)]);
+      this.parts.head.setColorAt(ix,C);
+      C.set(PANTS[Math.floor(Math.random()*PANTS.length)]);
+      this.parts.legL.setColorAt(ix,C); this.parts.legR.setColorAt(ix,C);
+    });
+    for(const k in this.parts){ const m=this.parts[k]; m.castShadow=true; this.group.add(m); }
+    this._m=new THREE.Matrix4(); this._mp=new THREE.Matrix4(); this._mf=new THREE.Matrix4();
+    this._q=new THREE.Quaternion(); this._v=new THREE.Vector3(); this._sv=new THREE.Vector3();
+    this._up=new THREE.Vector3(0,1,0);
+  }
+  update(dt, player){
+    const M=this._m, MP=this._mp, MF=this._mf, Q=this._q, V=this._v, SV=this._sv, P=this.parts;
+    for(let ix=0;ix<this.peds.length;ix++){
+      const p=this.peds[ix];
+      // avanzamento lungo il perimetro (rettangolo di semilato R attorno all'isolato)
+      const perim=8*p.R, run=1+p.runK*1.7;
+      p.s=((p.s + p.dir*p.speed*run*dt)%perim+perim)%perim;
+      const seg=Math.floor(p.s/(2*p.R)), f=p.s%(2*p.R)-p.R;
+      let x,z,tx,tz;
+      if(seg===0){ x=p.bx+f;   z=p.bz-p.R; tx=1;  tz=0; }
+      else if(seg===1){ x=p.bx+p.R; z=p.bz+f; tx=0; tz=1; }
+      else if(seg===2){ x=p.bx-f;   z=p.bz+p.R; tx=-1; tz=0; }
+      else            { x=p.bx-p.R; z=p.bz-f;  tx=0;  tz=-1; }
+      // spavento: auto vicina -> corsa + scarto laterale (decade da solo)
+      const ax=player.pos.x-x, az=player.pos.z-z, ad=Math.hypot(ax,az);
+      let runT=0;
+      if(ad<7){ runT=1;
+        const push=(7-ad)*3.6*dt;
+        p.ox-=ax/(ad||1)*push; p.oz-=az/(ad||1)*push;
+      }
+      p.runK=approach(p.runK, runT, dt*(runT>p.runK?6:0.8));
+      p.ox*=1/(1+dt*1.3); p.oz*=1/(1+dt*1.3);
+      const ol=Math.hypot(p.ox,p.oz);
+      if(ol>2.2){ p.ox*=2.2/ol; p.oz*=2.2/ol; }
+      x+=p.ox; z+=p.oz;
+      // orientamento verso la direzione di marcia
+      const desired=Math.atan2(tx*p.dir, tz*p.dir);
+      let dh=desired-p.h;
+      while(dh>Math.PI)dh-=2*Math.PI; while(dh<-Math.PI)dh+=2*Math.PI;
+      p.h+= dt>0 ? dh*Math.min(1,dt*6) : dh;
+      // ciclo di camminata: gambe/braccia in controfase, leggero molleggio
+      p.phase+=dt*p.speed*run*5.2;
+      const swing=Math.sin(p.phase)*(0.5+0.45*p.runK);
+      const bob=Math.abs(Math.sin(p.phase))*0.035;
+      Q.setFromAxisAngle(this._up, p.h);
+      M.compose(V.set(x, 0.3+bob, z), Q, SV.set(p.k,p.k,p.k));
+      P.torso.setMatrixAt(ix,M); P.head.setMatrixAt(ix,M);
+      MP.makeRotationX(swing);        MP.setPosition(-0.09,0.80,0); MF.multiplyMatrices(M,MP); P.legL.setMatrixAt(ix,MF);
+      MP.makeRotationX(-swing);       MP.setPosition( 0.09,0.80,0); MF.multiplyMatrices(M,MP); P.legR.setMatrixAt(ix,MF);
+      MP.makeRotationX(-swing*0.8);   MP.setPosition(-0.23,1.36,0); MF.multiplyMatrices(M,MP); P.armL.setMatrixAt(ix,MF);
+      MP.makeRotationX(swing*0.8);    MP.setPosition( 0.23,1.36,0); MF.multiplyMatrices(M,MP); P.armR.setMatrixAt(ix,MF);
+    }
+    for(const k in P) P[k].instanceMatrix.needsUpdate=true;
+  }
+  dispose(){
+    scene.remove(this.group);
+    disposeSceneGroup(this.group);
+  }
+}
+let peds=null;
 function rebuildPeds(){
   if(peds){ peds.dispose(); peds=null; }
   if(state.pedsOn && world && world.id==='city' && state.running){
-    peds=new Citizens(world,{mobile:IS_TOUCH,clock:()=>simTime});scene.add(peds.group);
+    peds=new Pedestrians(world);
     peds.update(0, car||{ pos:{ x:1e9, z:1e9 } });   // posa iniziale corretta al primo frame
-    // persone realistiche (Mixamo convertiti in assets/people/): appena pronte sostituiscono i corpi semplici
-    const target=peds;
-    crowdTypes=crowdTypes||loadCrowdTypes();
-    crowdTypes.then(types=>{ if(!types.length||peds!==target) return;
-      target.useCrowd(new Crowd(types, Math.ceil(target.peds.length/types.length)+2, { castShadow:!IS_TOUCH }));
-      target.update(0, car||{ pos:{ x:1e9, z:1e9 } }); });
   }
-}
-
-/* =====================================================================
-   POLIZIA — volanti con la stessa fisica del giocatore (police.js)
-===================================================================== */
-let police=null, bustedT=0;
-function rebuildPolice(){
-  if(police){ police.dispose(); police=null; }
-  if(state.policeOn && world && state.running)
-    police=new PoliceDispatcher({ THREE, Car, extrudeBody, disposeVehicle, scene, world, getPlayer:()=>car,
-      mobile:IS_TOUCH, clock:()=>simTime, signalState, attachModel, getTraffic:()=>traffic, getPeds:()=>peds, audio, camera,
-      gripMul:()=>state.gripMul,
-      onImpact:im=>burstSparks(new THREE.Vector3(im.x,world.height(im.x,im.z)+.5,im.z),Math.min(18,Math.round(im.speed*2)),new THREE.Vector3(0,1,0)),
-      onEvaded:()=>toast('SEMINATI! LIVELLO RICERCATO AZZERATO'),
-      onBusted:bustPlayer });
-  updateWantedHUD(true);
-}
-function bustPlayer(){
-  const score=race.score; recoverCar(); race.score=Math.round(score*.7);
-  bustedT=2.6; document.getElementById('bustedMsg').classList.add('show');
-}
-const wantedEl=document.getElementById('wantedBox'), starsEl=document.getElementById('wantedStars'), evadeEl=document.getElementById('wantedEvade');
-let wantedShown=-1, evadeShown='';
-function updateWantedHUD(force){
-  const w=police&&police.wanted, lvl=w?w.level:0;
-  if(force||lvl!==wantedShown){ wantedShown=lvl;
-    starsEl.innerHTML=[0,1,2,3,4].map(i=>'<i class="'+(i<lvl?'on':'')+'">★</i>').join('');
-    wantedEl.classList.toggle('active',lvl>0); }
-  const txt=w&&lvl>0&&!w.seen?'FUGA '+Math.max(0,Math.ceil(w.evadeTime-w.lostT))+' s':(w&&lvl>0?'INSEGUIMENTO':'');
-  if(txt!==evadeShown){ evadeShown=txt; evadeEl.textContent=txt; wantedEl.classList.toggle('hiding',!!(w&&lvl>0&&!w.seen)); }
 }
 
 /* =====================================================================
    STATO DI GIOCO / AMBIENTE
 ===================================================================== */
 const state={ running:false, paused:false, vehicle:0, map:0,
-              time:'sunset', weather:'sun', cam:0, gripMul:1, trafficOn:true, pedsOn:true, policeOn:true };
+              time:'sunset', weather:'sun', cam:0, gripMul:1, trafficOn:true, pedsOn:true };
 let car=null;
 
 const ENV_TIME={
@@ -2865,16 +2910,12 @@ function applyEnvironment(){
   exteriorTarget=photographicEnvironment&&state.time==='sunset'&&w==='sun'?photographicEnvironment:buildExteriorEnvironment(renderer,sTop,sBot,new THREE.Color(t.sunCol),state.sunOff,state.time==='night');
   envTex=exteriorTarget.texture;
   scene.environment=envTex;
-  scene.traverse(o=>{for(const m of [].concat(o.material||[]))if(oldEnv&&m.envMap===oldEnv)m.envMap=envTex;});
+  scene.traverse(o=>{for(const m of [].concat(o.material||[]))if(m.envMap===oldEnv)m.envMap=envTex;});
   if(oldTarget&&oldTarget!==photographicEnvironment&&oldTarget!==exteriorTarget)oldTarget.dispose();
   stars.visible=(state.time==='night'&&w==='sun');
   sunBall.visible=(state.time==='sunset'&&w==='sun');
   sunBall.material.color.set(0xffae42);
   rainObj.visible=(w==='rain');
-  // fumo: vento più teso con pioggia/nebbia; di notte un filo di luce diffusa (città, lampioni)
-  tireSmoke.wind.set(0.8,0,0.45).multiplyScalar(w==='rain'?2.4:w==='fog'?0.4:1);
-  tireSmoke.uniforms.uLift.value=state.time==='night'?0.035:0;
-  tireSmoke.tailGlow=state.time==='night'?0.7:state.time==='sunset'?0.15:0.06;
 
   // attrito: pioggia -40% (spazi di frenata circa raddoppiati)
   state.gripMul = w==='rain'?0.6 : w==='fog'?0.95 : 1.0;
@@ -2890,7 +2931,7 @@ function applyEnvironment(){
     // maxischermi LED: restano leggibili anche in pieno giorno (piu' dei neon decorativi)
     if(world.adMats&&state.time!=='night')
       world.adMats.forEach(m=>m.color.copy(m.userData.base).multiplyScalar(state.time==='sunset'?0.8:0.5));
-    if(world.oceanMat) world.oceanMat.color.set(state.time==='sunset'?0xe2d8e0:(state.time==='night'?0x2a3446:0xffffff));   // luminosità dell'acqua per orario
+    if(world.oceanMat) world.oceanMat.color.set(state.time==='sunset'?0x3a5a9a:(state.time==='night'?0x0a1626:0x1a5f8a));
     if(world.cloudMat){ // nuvole tinte dall'ora e dal meteo
       const cm=world.cloudMat;
       if(w==='fog'){ cm.opacity=0; }
@@ -3008,10 +3049,6 @@ function calcRpm(){
     const r=clamp(s/c.topSpeed,0,1)*0.85+car.throttle*0.15;
     return { rpm:r, label:'kW '+Math.round(car.throttle*180*Math.max(.2,1-s/c.topSpeed/1.4)) };
   }
-  if(car.dyn&&car.dyn.p.engine){               // giri reali dal motore simulato
-    const e=car.dyn.p.engine, rpm=clamp((car.engineRpm-e.idle)/(e.redline-e.idle),0,1)*0.84+0.12;
-    return { rpm, label:Math.round(car.engineRpm)+' RPM', gearNum:car.gearNum };
-  }
   const gs=c.gears; let g=0;
   while(g<gs.length-1&&s>gs[g]) g++;
   const lo=g>0?gs[g-1]:0, frac=clamp((s-lo)/(gs[g]-lo),0,1);
@@ -3103,18 +3140,6 @@ function drawMini(){
   if(traffic){
     mmCtx.fillStyle='#ffa528';
     for(const c of traffic.cars){ mmCtx.beginPath(); mmCtx.arc(px(c.pos.x),py(c.pos.z),3,0,7); mmCtx.fill(); }
-  }
-  if(police){
-    const w=police.wanted;
-    if(w.level>0&&!w.seen&&police.lastSeen){
-      mmCtx.save(); mmCtx.strokeStyle='rgba(255,80,80,.8)'; mmCtx.setLineDash([5,4]); mmCtx.lineWidth=2;
-      mmCtx.beginPath(); mmCtx.arc(px(police.lastSeen.x),py(police.lastSeen.z),Math.max(10,70*mmScale),0,7); mmCtx.stroke(); mmCtx.restore();
-    }
-    const blink=Math.floor(simTime*4)%2===0;
-    for(const u of police.units){
-      mmCtx.fillStyle=u.siren?(blink?'#3a7bff':'#ff3040'):'#6f8fd0';
-      mmCtx.beginPath(); mmCtx.arc(px(u.pos.x),py(u.pos.z),u.siren?4.5:3.5,0,7); mmCtx.fill();
-    }
   }
   mmCtx.save();
   mmCtx.translate(px(car.pos.x),py(car.pos.z));
@@ -3213,10 +3238,7 @@ VEHICLES.forEach((v,i)=>{
 document.querySelectorAll('#mapCards .card').forEach((d,i)=>{
   d.tabIndex=0;d.setAttribute('role','button');d.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();d.click();}};
   if(i===0) d.classList.add('sel');
-  d.onclick=()=>{ if(state.map===Number(d.dataset.map))return;
-    state.map=Number(d.dataset.map);startGame();state.paused=true;
-    document.body.classList.add('in-menu');menuEl.classList.remove('hidden');
-    document.getElementById('startBtn').textContent='GUIDA A '+MAPS[state.map].name.toUpperCase();
+  d.onclick=()=>{ state.map=Number(d.dataset.map);
     document.querySelectorAll('#mapCards .card').forEach(c=>c.classList.toggle('sel', Number(c.dataset.map)===state.map)); };
 });
 
@@ -3237,7 +3259,7 @@ function toggleMenu(){
   state.paused=!state.paused;
   document.body.classList.toggle('in-menu',state.paused);
   menuEl.classList.toggle('hidden', !state.paused);
-  document.getElementById('startBtn').textContent=state.paused?'RIPRENDI LA GUIDA →':'INIZIA A GUIDARE →';
+  document.getElementById('startBtn').textContent=state.paused?'RIPRENDI / APPLICA':'AVVIA MOTORE';
 }
 
 document.querySelectorAll('.timeBtn').forEach(b=>b.onclick=()=>{
@@ -3255,19 +3277,6 @@ document.querySelectorAll('.trBtn').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.trBtn').forEach(x=>x.classList.toggle('on',x===b));
   rebuildTraffic(); applyEnvironment();
   toast(state.trafficOn?'TRAFFICO ATTIVO':'TRAFFICO SPENTO');
-});
-// aiuti alla guida (ABS, controllo di trazione e di stabilità): memorizzati tra le sessioni
-try{ state.assists=localStorage.getItem('veloce-assists')!=='off'; }catch{ state.assists=true; }
-document.querySelectorAll('.asBtn').forEach(b=>{ b.classList.toggle('on',(b.dataset.as==='on')===state.assists);
-  b.onclick=()=>{ state.assists=b.dataset.as==='on';
-    document.querySelectorAll('.asBtn').forEach(x=>x.classList.toggle('on',x===b));
-    try{ localStorage.setItem('veloce-assists',state.assists?'on':'off'); }catch{}
-    toast(state.assists?'ASSISTENZE ATTIVE (ABS · TC · ESC)':'ASSISTENZE SPENTE: GUIDA SIMULATIVA'); }; });
-document.querySelectorAll('.plBtn').forEach(b=>b.onclick=()=>{
-  state.policeOn=(b.dataset.pl==='on');
-  document.querySelectorAll('.plBtn').forEach(x=>x.classList.toggle('on',x===b));
-  rebuildPolice();
-  toast(state.policeOn?'POLIZIA ATTIVA':'POLIZIA SPENTA');
 });
 document.querySelectorAll('.pdBtn').forEach(b=>b.onclick=()=>{
   state.pedsOn=(b.dataset.pd==='on');
@@ -3322,15 +3331,6 @@ if(IS_TOUCH){
   if(IS_IOS&&!STANDALONE) document.getElementById('iosHint').style.display='block';
 }
 
-// Foreste di impostori: sostituiscono gli alberi semplici appena le texture sono pronte.
-function plantWorldForests(w){
-  if(!w.treeSpots) return;
-  const wanted=Object.values(w.treeSpots).filter(a=>a.length).length;
-  plantForests(w.group,w.treeSpots,{ anisotropy:IS_TOUCH?2:8 }).then(fs=>{
-    w.forests=fs; fs.forEach(f=>AO_EXCLUDE.add(f.mesh));
-    if(fs.length===wanted&&w.oldTrees) w.oldTrees.forEach(m=>m.visible=false);
-  });
-}
 function startGame(){
   const mapChanged=!world||world.id!==MAPS[state.map].id;
   camera.fov=62;camera.updateProjectionMatrix();
@@ -3338,52 +3338,36 @@ function startGame(){
   if(mapChanged){
     disposeWorld();
     world=state.map===0?buildCity():buildCoast();
-    plantWorldForests(world);
   }
   if(carChanged||mapChanged){
     if(car) disposeVehicle(car);
-    car=new Car(VEHICLES[state.vehicle]); attachModel(car);
+    car=new Car(VEHICLES[state.vehicle]);
     car.reset(world.start.x, world.start.z, world.start.h);
-    car.syncMesh(1,world);
-    const gy=world.height(world.start.x,world.start.z);
-    camPos.set(world.start.x-Math.sin(world.start.h)*8,gy+2.5,world.start.z-Math.cos(world.start.h)*8);
-    camLook.set(world.start.x+Math.sin(world.start.h)*5,gy+1,world.start.z+Math.cos(world.start.h)*5);
+    camPos.set(world.start.x-Math.sin(world.start.h)*8, 4, world.start.z-Math.cos(world.start.h)*8);
+    camLook.set(world.start.x,1,world.start.z+5);
     audio.setProfile(car.cfg);
     document.getElementById('carName').innerHTML=`<b>${car.cfg.name}</b> &nbsp;·&nbsp; ${MAPS[state.map].name}`;
   }
   state.running=true; state.paused=false;state.photo=false;acc=0;
   releaseInput();document.body.classList.remove('in-menu','photo');
-  if(mapChanged){ simTime=0;rebuildTraffic(); rebuildPeds(); rebuildPolice(); skidMarks.clear(); tireSmoke.clear(); raceReset(); }
-  updateLightMats();
+  if(mapChanged){ rebuildTraffic(); rebuildPeds(); skidMarks.clear(); raceReset(); }
   applyEnvironment();
   menuEl.classList.add('hidden');
   document.querySelectorAll('.timeBtn').forEach(b=>b.classList.toggle('on',b.dataset.t===state.time));
   document.querySelectorAll('.trBtn').forEach(b=>b.classList.toggle('on',(b.dataset.tr==='on')===state.trafficOn));
   document.getElementById('touchUI').classList.toggle('hidden', !IS_TOUCH);
-  window.__dbg={ car, world, state, keys, touch:IS_TOUCH, race, smoke:tireSmoke, // handle per test/debug da console
+  window.__dbg={ car, world, state, keys, touch:IS_TOUCH, race, // handle per test/debug da console
                  skid:skidMarks, audio,
                  get traffic(){ return traffic; },
                  get peds(){ return peds; },
-                 get police(){ return police; },
                  sim:{ set:v=>{ simTime=v; updateLightMats(); }, phase:lightPhase },
                  three:{ camera, camPos, camLook, renderer, scene, composer } };
 }
 
-// Modello glTF reale (se presente nel manifest): sostituisce la carrozzeria procedurale appena caricato.
-function attachModel(c){
-  loadVehicleModel(c.cfg.id).then(tpl=>{
-    if(!tpl||!c.group.parent||c.model) return;          // auto già eliminata o modello assente
-    applyVehicleModel(c,tpl,{envTex});
-    const lightsOn=(state.time==='night'||state.weather!=='sun');
-    c.headMat.emissiveIntensity=lightsOn?3.0:0.4;
-    c.envMats.forEach(m=>m.envMapIntensity=state.time==='night'?0.12:m.userData.baseEnv);
-    if(world) c.syncMesh(0,world);
-  });
-}
 function swapVehicle(i){ // cambio auto al volo: mantiene posizione e velocita'
   const old=car;
   state.vehicle=i;
-  car=new Car(VEHICLES[i]); attachModel(car);
+  car=new Car(VEHICLES[i]);
   car.pos.copy(old.pos); car.vel.copy(old.vel);
   car.heading=old.heading;car.previousHeading=old.heading;car.previousPos.copy(old.pos); car.yawRate=old.yawRate;
   disposeVehicle(old);
@@ -3411,8 +3395,7 @@ let quality='auto',renderRatio=Math.min(devicePixelRatio,IS_TOUCH?1.25:1.5),perf
 function setResolution(ratio){renderRatio=ratio;renderer.setPixelRatio(ratio);renderer.setSize(innerWidth,innerHeight);if(composer){composer.setPixelRatio(ratio);composer.setSize(innerWidth,innerHeight);}}
 function setQuality(value){
   quality=value;setResolution(Math.min(devicePixelRatio,value==='high'?2:value==='performance'?1:IS_TOUCH?1.25:1.5));
-  if(bloomPass) bloomPass.enabled=value!=='performance';
-  if(aoPass) aoPass.enabled=value!=='performance';
+  if(composer)composer.passes[1].enabled=value!=='performance';
   try{localStorage.setItem('veloce-quality',value);}catch{}
   perfTime=0;perfFrames=0;perfCooldown=4;
 }
@@ -3430,17 +3413,6 @@ function updatePerformance(dt){
     perfCooldown=5;
   }
   perfFrames=0;perfTime=0;
-}
-function updateRoadInfo(){
-  const el=document.getElementById('signalInfo');
-  if(world.id!=='city'){el.classList.remove('hidden');el.style.setProperty('--signal-color','#70dccc');el.querySelector('span').textContent='Riviera del Sole';el.querySelector('small').textContent='Giro '+race.lap+' · '+fmtLap(race.clock-race.lapT);return;}
-  const fx=Math.sin(car.heading),fz=Math.cos(car.heading),axis=Math.abs(fz)>Math.abs(fx)?0:1;
-  let nearest=Infinity;
-  for(const x of world.streets)for(const z of world.streets){const dx=x-car.pos.x,dz=z-car.pos.z,d=dx*fx+dz*fz,lateral=Math.abs(dx*fz-dz*fx);if(d>0&&d<100&&lateral<12)nearest=Math.min(nearest,d);}
-  el.classList.toggle('hidden',!Number.isFinite(nearest));if(!Number.isFinite(nearest))return;
-  const signal=signalState(simTime,axis);el.style.setProperty('--signal-color',signal.phase==='green'?'#74e8b0':signal.phase==='amber'?'#f5c36b':'#ff6b78');
-  el.querySelector('span').textContent=signal.phase==='green'?'Via libera':signal.phase==='amber'?'Rallenta':'Fermati alla linea';
-  el.querySelector('small').textContent=Math.round(Math.max(0,nearest-17))+' m · '+Math.ceil(signal.remaining)+' s';
 }
 function updateShowroom(time){
   const angle=car.heading+2.25+Math.sin(time*.10)*.18;
@@ -3468,13 +3440,12 @@ renderer.domElement.addEventListener('pointermove',e=>{if(!photo.drag||!state.ph
 for(const ev of ['pointerup','pointercancel'])renderer.domElement.addEventListener(ev,()=>photo.drag=false);
 renderer.domElement.addEventListener('wheel',e=>{if(!state.photo)return;e.preventDefault();photo.distance=clamp(photo.distance+e.deltaY*.012,3,24);},{passive:false});
 function recoverCar(){car.reset(world.start.x,world.start.z,world.start.h);car.syncMesh(1,world);camPos.set(world.start.x-Math.sin(world.start.h)*7,world.height(world.start.x,world.start.z)+2.4,world.start.z-Math.cos(world.start.h)*7);camLook.set(world.start.x+Math.sin(world.start.h)*4,world.height(world.start.x,world.start.z)+1,world.start.z+Math.cos(world.start.h)*4);skidMarks.break();raceReset();toast('AUTO RIPOSIZIONATA');}
-document.getElementById('settingsBtn').onclick=()=>{const open=document.body.classList.toggle('settings-open');document.getElementById('settingsBtn').setAttribute('aria-expanded',String(open));};
 document.getElementById('garageBtn').onclick=toggleMenu;
 document.getElementById('photoBtn').onclick=togglePhoto;
 document.getElementById('resetBtn').onclick=recoverCar;
 document.getElementById('photoHint').onclick=togglePhoto;
 
-let last=performance.now(), acc=0;
+let last=performance.now(), acc=0, smokeAcc=0;
 const FIXED=1/120;
 
 function animate(t){
@@ -3484,18 +3455,14 @@ function animate(t){
   if(state.running&&!state.paused){
     pollGamepad();
     acc+=dt; let n=0;
-    while(acc>=FIXED&&n<6){ car.update(FIXED, world); if(police) police.step(FIXED); acc-=FIXED; n++; }
+    while(acc>=FIXED&&n<6){ car.update(FIXED, world); acc-=FIXED; n++; }
     car.syncMesh(dt, world, acc/FIXED);
     simTime+=dt; updateLightMats();
     if(traffic) traffic.update(dt, car);
     if(peds) peds.update(dt, car);
-    if(police){ police.frame(dt, acc/FIXED); updateWantedHUD(false); }
-    if(bustedT>0&&(bustedT-=dt)<=0) document.getElementById('bustedMsg').classList.remove('show');
 
     // --- mare vivo: onde sulla mesh vicina + barche che dondolano ---
     if(world.ocean)world.ocean.time.value=simTime;
-    if(world.waterTime) world.waterTime.value=simTime;
-    if(world.forests) for(const f of world.forests) f.update(simTime);
     if(world.boats) for(const b of world.boats){
       b.grp.position.y=-1.55+Math.sin(simTime*0.9+b.ph)*0.16;
       b.grp.rotation.z=Math.sin(simTime*0.7+b.ph)*0.05;
@@ -3513,10 +3480,22 @@ function animate(t){
     const slipAbs=Math.abs(car.slipR);
     const drifting=(slipAbs>0.18||car.handbrake)&&Math.abs(car.vz)>4;
     const burnout=car.spin>0.3&&car.throttle>0.4&&Math.abs(car.vz)<16; // pattinamento al lancio
-    // fumo dove il battistrada striscia (anche le volanti), polvere fuoristrada, spruzzi sul bagnato
-    const wet=state.weather==='rain';
-    tireSmoke.emitFromCar(car, world, dt, { rain:wet });
-    if(police) for(const u of police.units) tireSmoke.emitFromCar(u.car, world, dt, { rain:wet });
+    smokeAcc+=dt;
+    if(smokeAcc>0.03){
+      smokeAcc=0;
+      if((drifting||burnout)&&!surf.dust){ // fumo bianco da asfalto
+        for(const s of [-1,1]){
+          const p=car.rearWheelWorld(s);
+          smoke.spawn(p, new THREE.Vector3(rnd(-.5,.5),rnd(.6,1.6),rnd(-.5,.5)).add(
+            new THREE.Vector3(car.vel.x,0,car.vel.z).multiplyScalar(0.25)),
+            rnd(.8,1.3), rnd(.5,.9), 2.6, state.weather==='rain'?0x9aa8b5:0xdcdcdc, 0.34);
+        }
+      } else if(surf.dust&&Math.abs(car.vz)>6){ // polvere fuoristrada
+        const p=car.rearWheelWorld(Math.random()<.5?-1:1);
+        smoke.spawn(p, new THREE.Vector3(rnd(-.8,.8),rnd(.4,1.2),rnd(-.8,.8)),
+          rnd(.6,1), rnd(.6,1), 2.2, 0x8a6f4d, 0.3);
+      }
+    }
     skidMarks.update(car, drifting, burnout, surf);
     while(car.impacts.length){            // scintille sugli urti
       const im=car.impacts.pop();
@@ -3525,7 +3504,7 @@ function animate(t){
       burstSparks(new THREE.Vector3(im.x, car.group.position.y+0.5, im.z),
         Math.min(26, Math.round(im.speed*2.5)), new THREE.Vector3(car.vel.x,1,car.vel.z));
     }
-    tireSmoke.focusCar=car; tireSmoke.update(dt, camera); sparks.update(dt);
+    smoke.update(dt); sparks.update(dt);
 
     // --- pioggia attorno alla camera ---
     if(rainObj.visible){
@@ -3540,7 +3519,7 @@ function animate(t){
     }
 
     updateCamera(dt);
-    const hud=updateHUD();updateRoadInfo();
+    const hud=updateHUD();
     raceUpdate(dt, hud, surf);
     // neon sottoscocca: pulsa piano, intensità base decisa da applyEnvironment
     if(car.glowMat) car.glowMat.opacity=car.glowBase*(0.88+0.12*Math.sin(simTime*6.3));
@@ -3561,7 +3540,7 @@ function animate(t){
       car.braking?clamp((-car.longSmooth-7.5)/4,0,1)*0.5*speedK:0);
     if(surf.dust) screech*=0.15;
     audio.update(hud.rpm, car.throttle, screech, hud.gearNum, surf.dust?Math.abs(car.vz):0);
-  } else if(audio.ready){ audio.still(); if(police) police.pause(); }   // menu/pausa: motore e stridio si spengono
+  } else if(audio.ready) audio.still();   // menu/pausa: motore e stridio si spengono
   if(state.paused&&car){
     if(state.photo)updatePhotoCamera();else updateShowroom(t*.001);
   }

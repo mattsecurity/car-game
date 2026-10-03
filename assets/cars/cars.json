@@ -1,0 +1,15 @@
+{
+  "falcone": {
+    "file": "falcone-carconcept.glb",
+    "paint": "^Paint 1",
+    "tint": false,
+    "title": "Car Concept",
+    "credit": "Eric Chadwick (modello e texture), © 2024 Darmstadt Graphics Group GmbH; da un modello CC0 di Unity Fan",
+    "license": "CC BY 4.0",
+    "source": "https://github.com/KhronosGroup/glTF-Sample-Assets/tree/main/Models/CarConcept"
+  },
+  "brutus": { "file": "brutus.glb", "tint": false, "note": "da scaricare: vedi DA-SCARICARE.md" },
+  "volt": { "file": "volt.glb", "tint": false, "note": "da scaricare: vedi DA-SCARICARE.md" },
+  "fuoco": { "file": "fuoco.glb", "tint": false, "note": "da scaricare: vedi DA-SCARICARE.md" },
+  "police": { "file": "police.glb", "paint": "paint|body|carpaint|vernice", "tint": true, "note": "da scaricare: vedi DA-SCARICARE.md; la vernice viene tinta nel blu Polizia" }
+}

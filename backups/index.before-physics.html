@@ -296,10 +296,6 @@
     <button class="envBtn plBtn on" data-pl="on">Attiva</button>
     <button class="envBtn plBtn" data-pl="off">Spenta</button>
   </div>
-  <div class="envRow"><span>ASSISTENZE</span>
-    <button class="envBtn asBtn on" data-as="on">ABS · TC · ESC</button>
-    <button class="envBtn asBtn" data-as="off">Spente</button>
-  </div>
 </div>
 <div class="hudBox" id="raceInfo">
   <div class="chip"><div class="lbl" id="lapLbl">GIRO</div><div class="val" id="lapVal">1</div></div>
@@ -376,9 +372,6 @@ import { CarFleet, makeCarMaterials } from './traffic-cars.js';
 import { makeWaterMaterial, makeDepthTexture } from './ocean.js';
 import { placeProps } from './props.js';
 import { loadCrowdTypes, Crowd } from './crowd.js';
-import { VehicleDynamics } from './vehicle-physics.js';
-import { VEHICLES } from './vehicles.js';
-import { TireSmoke, SmokePass, SMOKE_LAYER } from './tire-smoke.js';
 import { SHARED_TEXTURES, pbrMaterial, pbrMaps, terrainSplatMaterial } from './pbr-textures.js';
 import { RGBELoader } from 'three/addons/loaders/RGBELoader.js';
 
@@ -403,6 +396,58 @@ if(IS_TOUCH) document.body.classList.add('touch');   // aggancio CSS (media quer
    cgH       : altezza baricentro -> intensita' del trasferimento di carico
    aDist/bDist: distanza baricentro -> asse anteriore / posteriore
 ===================================================================== */
+const VEHICLES = [
+{ id:'falcone', name:'FALCONE GT-S', tag:'SUPERCAR · RWD',
+  desc:'Berlinetta leggera: accelerazione brutale, sovrasterzo di potenza in uscita curva.',
+  mass:1280, engineForce:12800, brakeForce:15500, topSpeed:96,
+  maxSteer:0.62, steerFade:0.0042, steerSpeed:3.4,
+  stiffF:10.5, stiffR:10.0, muF:1.42, muR:1.30,
+  cgH:0.40, wheelBase:2.62, aDist:1.45, bDist:1.17,
+  drag:0.40, rollRes:16, drive:'R', ev:false,
+  gears:[16,28,42,58,76,96], revHz:[70,180], distortion:0.25, bank:'falcone',
+  sound:{ w1:'sawtooth', w2:'sawtooth', r2:0.5, r3:3.01, g3:0.45, lfoHz:0, lfoDepth:0, filt:[380,3000], vol:1.0 },
+  body:{ w:1.96,h:0.60,l:4.45, color:0xc8102e, cab:[1.55,0.42,1.85,-0.15], wheelR:0.34, wheelW:0.32, track:1.92, clearance:0.26, neon:0xff8c1a },
+  stats:[0.96,0.92,0.84] },
+
+{ id:'brutus', name:'BRUTUS 502', tag:'MUSCLE · RWD',
+  desc:'Pesante, coppia mostruosa ai bassi: il posteriore scappa sempre, controsterzo continuo.',
+  mass:1760, engineForce:14800, brakeForce:13000, topSpeed:78,
+  maxSteer:0.60, steerFade:0.0036, steerSpeed:2.8,
+  stiffF:9.0, stiffR:7.0, muF:1.18, muR:0.97,
+  cgH:0.58, wheelBase:2.95, aDist:1.35, bDist:1.60,
+  drag:0.52, rollRes:22, drive:'R', ev:false,
+  gears:[15,27,42,58,78], revHz:[44,120], distortion:0.65, bank:'brutus',
+  sound:{ w1:'sawtooth', w2:'square', r2:0.5, r3:1.5, g3:0.6, lfoHz:11, lfoDepth:0.4, filt:[180,1300], vol:1.2 },
+  body:{ w:1.98,h:0.74,l:4.95, color:0x23272f, cab:[1.68,0.46,1.70,-0.35], wheelR:0.37, wheelW:0.30, track:1.96, clearance:0.32, neon:0xff2f4a },
+  stats:[0.74,0.84,0.52] },
+
+{ id:'volt', name:'VOLT PIXIE EV', tag:'CITY EV · AWD',
+  desc:'Coppia istantanea 0-50, baricentro bassissimo (batterie a pavimento), stabile e reattiva.',
+  mass:1380, engineForce:9800, brakeForce:14800, topSpeed:46,
+  maxSteer:0.66, steerFade:0.0050, steerSpeed:4.2,
+  stiffF:10.2, stiffR:10.8, muF:1.30, muR:1.34,
+  cgH:0.30, wheelBase:2.45, aDist:1.22, bDist:1.23,
+  drag:0.46, rollRes:12, drive:'A', ev:true,
+  gears:[46], revHz:[110,820], distortion:0.0,
+  sound:{ w1:'sine', w2:'triangle', r2:2.0, r3:6.0, g3:0.22, lfoHz:0, lfoDepth:0, filt:[700,3800], vol:0.45 },
+  body:{ w:1.78,h:0.86,l:3.55, color:0x19c2b8, cab:[1.50,0.50,1.55,0.05], wheelR:0.30, wheelW:0.24, track:1.68, clearance:0.26, neon:0x19f9d8 },
+  stats:[0.55,0.90,0.95] },
+
+{ id:'fuoco', name:'FUOCO F1-90', tag:'FORMULA · RWD',
+  desc:'Monoposto anni \'90: 600 kg, aerodinamica che la incolla a terra. Sopra i 150 km/h curva sui binari.',
+  mass:600, engineForce:15500, brakeForce:26000, topSpeed:97,
+  maxSteer:0.55, steerFade:0.0024, steerSpeed:4.6,
+  stiffF:13.5, stiffR:13.0, muF:1.75, muR:1.70,
+  cgH:0.24, wheelBase:2.90, aDist:1.55, bDist:1.35,
+  drag:0.45, rollRes:18, drive:'R', ev:false, df:1.9,
+  gears:[17,28,40,54,72,97], revHz:[135,590], distortion:0.38, bank:'fuoco',
+  // V10 anni '90: fondamentale alta, quinta (r2 1.5) + terza armonica dense, detune
+  // forte per i battimenti, picco risonante stretto e filtro molto aperto = urlo
+  sound:{ w1:'sawtooth', w2:'sawtooth', r2:1.5, r3:3.01, g3:0.75, det:22, pq:3.4,
+          lfoHz:0, lfoDepth:0, filt:[900,7800], vol:1.15 },
+  body:{ w:1.42,h:0.45,l:4.55, color:0xf2f4f6, wheelR:0.33, wheelRR:0.37, wheelW:0.36, wheelWR:0.50, track:1.86, clearance:0.10, neon:0xffd23c },
+  stats:[1.0,1.0,1.0] }
+];
 const MAPS = [ {id:'city', name:'Valdora'}, {id:'coast', name:'Riviera del Sole'} ];
 
 /* =====================================================================
@@ -645,13 +690,7 @@ let composer=null, bloomPass=null, aoPass=null;
 // oggetti esclusi dal passaggio di occlusione (impostori: nel materiale di normali sarebbero rettangoli)
 const AO_EXCLUDE=new Set();
 if(!IS_TOUCH){
-  { // profondità condivisa fra i due buffer: il fumo, disegnato dopo l'AO sul buffer "di lettura",
-    // resta nascosto dietro auto, muri e alberi (GTAO/bloom non scrivono profondità)
-    const sz=renderer.getSize(new THREE.Vector2()), pr=renderer.getPixelRatio();
-    const rt=new THREE.WebGLRenderTarget(sz.x*pr, sz.y*pr, { type:THREE.HalfFloatType, depthTexture:new THREE.DepthTexture(sz.x*pr, sz.y*pr) });
-    composer=new EffectComposer(renderer, rt);
-    composer.renderTarget2.depthTexture=composer.renderTarget1.depthTexture;
-  }
+  composer=new EffectComposer(renderer);
   composer.addPass(new RenderPass(scene,camera));
   // occlusione ambientale (GTAO): ombre di contatto fra muri, marciapiedi, auto e arredo
   aoPass=new GTAOPass(scene,camera,innerWidth,innerHeight);
@@ -941,12 +980,7 @@ class SpritePool {
     }
   }
 }
-// fumo gomme / polvere / spruzzi: sbuffi volumetrici istanziati (tire-smoke.js)
-const tireSmoke = new TireSmoke(scene, { max:IS_TOUCH?220:420, rateScale:IS_TOUCH?0.55:1, layer:composer?SMOKE_LAYER:0 });
-AO_EXCLUDE.add(tireSmoke.mesh);
-// desktop: il fumo ha un suo pass dopo l'AO, a metà risoluzione, con particelle morbide sulla profondità della scena
-if(composer) composer.insertPass(new SmokePass(tireSmoke, scene, camera, { depth:()=>composer.renderTarget1.depthTexture }),
-  composer.passes.indexOf(aoPass)+1);
+const smoke  = new SpritePool(140, { additive:false });
 const sparks = new SpritePool(160, { additive:true, grav:-22 });
 
 function burstSparks(p, n, baseVel){
@@ -1060,7 +1094,7 @@ function disposeSceneGroup(group){
 }
 function disposeWorld(){
   if(!world) return;
-  AO_EXCLUDE.clear(); AO_EXCLUDE.add(tireSmoke.mesh);
+  AO_EXCLUDE.clear();
   if(traffic){ traffic.dispose(); traffic=null; }
   if(peds){ peds.dispose(); peds=null; }
   if(police){ police.dispose(); police=null; }
@@ -2426,7 +2460,6 @@ class Car {
     this.pos.set(x,0,z); this.vel.set(0,0,0);
     this.heading=h; this.previousHeading=h;this.previousPos.copy(this.pos);this.yawRate=0; this.steer=0; this.throttle=0;
     this.gear='D';this.revT=0;this.vz=0;this.vx=0;this.slipF=0;this.slipR=0;this.spin=0;this.impacts.length=0;this.rideInitialized=false;this.verticalSpeed=0; this.longSmooth=0; this.latSmooth=0;
-    if(this.dyn) this.dyn.reset();
   }
 
   update(dt, W){
@@ -2435,6 +2468,10 @@ class Car {
     const roadY=W.height(this.pos.x,this.pos.z);
     if(!this.rideInitialized){this.rideY=roadY;this.previousRideY=roadY;this.rideInitialized=true;}
     this.previousRideY=this.rideY;
+    this.contact=this.rideY-roadY<.14;
+    const verticalAcceleration=this.contact?clamp((roadY-this.rideY)*180-this.verticalSpeed*20,-9.81,70):-9.81;
+    this.verticalSpeed+=verticalAcceleration*dt;this.rideY+=this.verticalSpeed*dt;
+    if(this.rideY<roadY-.07){this.rideY=roadY-.07;this.verticalSpeed=Math.max(0,this.verticalSpeed);}
     const fwd={ x:Math.sin(this.heading), z:Math.cos(this.heading) };
     const right={ x:fwd.z, z:-fwd.x };
     let vz=this.vel.x*fwd.x+this.vel.z*fwd.z;   // velocita' longitudinale
@@ -2466,29 +2503,112 @@ class Car {
     const rate=c.steerSpeed*(sT===0?1.9:1.0);   // ritorno al centro piu' rapido
     this.steer=approach(this.steer, sT, rate*dt);
 
-    /* --- dinamica a 4 ruote (vehicle-physics.js): pneumatici Pacejka, sospensioni,
-       motore e cambio reali; aiuti (ABS/TC/ESC) salvo richiesta del giocatore --- */
-    if(!this.dyn) this.dyn=new VehicleDynamics(c);
-    this.dyn.assists=!!this.input||state.assists!==false;          // le volanti guidano sempre con gli aiuti
-    const rev=this.gear==='R';
-    const pedalBrake=brake?(K.down?1:P.brake):0, pedalGas=K.up?1:P.gas;
-    const inp={ throttle:rev?pedalBrake:this.throttle, brake:rev?pedalGas:pedalBrake, handbrake, steer:this.steer, reverse:rev, assists:this.dyn.assists };
-    const h1=W.height(this.pos.x+fwd.x*2, this.pos.z+fwd.z*2), h2=W.height(this.pos.x-fwd.x*2, this.pos.z-fwd.z*2);
-    const env={ height:W.height, surface:W.surface, gripMul:state.gripMul, slope:(h1-h2)/4 };
-    let res=null; for(let k=0;k<2;k++) res=this.dyn.step(this, dt/2, inp, env);
-    this.contact=res.contact; this.slipF=res.slipF; this.slipR=res.slipR; this.spin=res.spin;
-    const f2={ x:Math.sin(this.heading), z:Math.cos(this.heading) };
-    vz=this.vel.x*f2.x+this.vel.z*f2.z; vx=this.vel.x*f2.z-this.vel.z*f2.x;
+    /* --- superficie + meteo --- */
+    const surf=W.surface(this.pos.x,this.pos.z);
+    const gripW=state.gripMul*(this.contact?1:0);                  // pioggia: -40% attrito
+    const muF=c.muF*surf.grip*gripW;
+    let   muR=c.muR*surf.grip*gripW;
+    if(handbrake) muR*=0.35;                    // freno a mano: posteriore bloccato -> drift
 
-    // arresto totale: elimina micro-derive da fermi
-    if(Math.hypot(this.vel.x,this.vel.z)<0.15 && !K.up && P.gas<.05 && !(rev&&brake)){
-      this.vel.set(0,0,0); this.yawRate*=0.5; for(const w of this.dyn.wheels) w.omega=0;
+    /* --- forza motrice con curva di potenza --- */
+    let drive=0;
+    if(this.gear==='D'){
+      const s=Math.max(0,vz), top=c.topSpeed;
+      const curve=c.ev
+        ? (s<top*0.5 ? 1 : clamp(1-Math.pow((s-top*0.5)/(top*0.5),1.6),0,1))
+        : Math.max(0, 1-Math.pow(s/top,2.4));
+      const power=c.power||{falcone:360000,brutus:310000,volt:150000,fuoco:480000}[c.id];
+      drive=this.throttle*Math.min(c.engineForce,power/Math.max(10,s))*curve;
+      if(vz>=top) drive=0;
+    } else if(brake){
+      drive=-c.engineForce*0.5*clamp(1-(-vz)/13,0,1); // retro limitata a ~45 km/h
     }
-    this.longSmooth=lerp(this.longSmooth, this.dyn.aLong, clamp(dt*5,0,1));
-    this.latSmooth=lerp(this.latSmooth, this.dyn.aLat, clamp(dt*5,0,1));
-    this.vz=vz; this.vx=vx; this.handbrake=handbrake;
-    this.braking=pedalBrake>0.05&&!rev || (c.ev&&this.throttle<0.05&&vz>2);
-    this.engineRpm=this.dyn.rpm; this.gearNum=this.dyn.gearNum;
+
+    /* --- freni --- */
+    let brakeF=0;
+    if(this.gear==='D' && brake && vz>0.3) brakeF=c.brakeForce*(K.down?1:P.brake);
+    if(this.gear==='R' && (K.up||P.gas>.05) && vz<-0.3) brakeF=c.brakeForce;
+    if(c.ev && this.throttle<0.05 && vz>2 && !brake) brakeF+=c.mass*1.3;  // rigenerativa al rilascio
+    // freno motore a gas chiuso (termiche): ~0.35-0.7 m/s², più forte ai bassi regimi delle marce corte
+    else if(!c.ev && this.gear==='D' && this.throttle<0.05 && vz>1 && !brake) brakeF+=c.mass*(0.35+0.35*clamp(1-vz/c.topSpeed,0,1));
+
+    /* --- resistenze + pendenza --- */
+    const h1=W.height(this.pos.x+fwd.x*2, this.pos.z+fwd.z*2);
+    const h2=W.height(this.pos.x-fwd.x*2, this.pos.z-fwd.z*2);
+    const slope=(h1-h2)/4;
+    const drag=c.drag*vz*Math.abs(vz)+c.rollRes*surf.roll*vz;
+    let Flong=drive - Math.sign(vz)*brakeF - drag - c.mass*9.81*slope*(this.contact?1:0);
+
+    /* --- TRASFERIMENTO DI CARICO (cuore del feeling GTA) ---
+       In accelerazione il peso va sul posteriore (piu' trazione, meno
+       sterzo => sottosterzo di potenza); in frenata va sull'anteriore
+       (il posteriore si alleggerisce => sovrasterzo in staccata).     */
+    const L=c.wheelBase, m=c.mass;
+    const transfer=clamp(m*this.longSmooth*c.cgH/L, -m*4.2, m*4.2);
+    /* --- DOWNFORCE (F1): carico aerodinamico cresce col quadrato della
+       velocita' -> piu' vai forte, piu' grip hai (curve "sui binari") --- */
+    const df=(c.df||0)*vz*vz;
+    const loadF=Math.max(m*9.81*c.bDist/L - transfer + df*0.42, m*1.4);
+    const loadR=Math.max(m*9.81*c.aDist/L + transfer + df*0.58, m*1.4);
+
+    /* --- angoli di deriva (slip angle) --- */
+    const vzA=Math.max(Math.abs(vz),0.8);
+    const slipF=Math.atan2(vx+this.yawRate*c.aDist, vzA)-this.steer*Math.sign(vz||1);
+    const slipR=Math.atan2(vx-this.yawRate*c.bDist, vzA);
+    this.slipF=slipF; this.slipR=slipR;
+
+    /* --- limite di trazione (wheelspin): la gomma non puo' scaricare
+       piu' forza di mu*carico; l'eccesso di coppia "slitta" e basta --- */
+    const tracCap=(c.drive==='A' ? muF*loadF+muR*loadR : muR*loadR)*0.98;
+    // pattinamento: quanta coppia eccede l'aderenza (per burnout: fumo/segni/stridio)
+    this.spin=tracCap>1 ? clamp((Math.abs(drive)-tracCap)/tracCap, 0, 1) : 0;
+    if(Math.abs(drive)>tracCap) drive=Math.sign(drive)*tracCap;
+    /* --- anche il freno e' limitato dall'aderenza: sul bagnato (mu -40%)
+       gli spazi di frenata si allungano di conseguenza --- */
+    const brakeCap=(muF*loadF+muR*loadR)*0.85;
+    if(brakeF>brakeCap) brakeF=brakeCap;
+    Flong=drive - Math.sign(vz)*brakeF - drag - c.mass*9.81*slope*(this.contact?1:0);
+
+    /* --- forze laterali con CERCHIO D'ATTRITO: piu' forza longitudinale
+       (coppia O freno) scarichi, meno grip laterale resta =>
+       power oversteer in uscita, sovrasterzo in staccata --- */
+    const tracR=((c.drive!=='F') ? Math.abs(drive)*(c.drive==='A'?0.5:1) : 0)+brakeF*0.4;
+    const tracF=((c.drive==='A') ? Math.abs(drive)*0.5 : 0)+brakeF*0.6;
+    const FyFmax=Math.sqrt(Math.max(0,(muF*loadF)**2-tracF**2));
+    const FyRmax=Math.sqrt(Math.max(0,(muR*loadR)**2-tracR**2));
+    const FyF=-FyFmax*Math.tanh(c.stiffF*slipF*loadF/Math.max(1,FyFmax));
+    const FyR=-FyRmax*Math.tanh(c.stiffR*slipR*loadR/Math.max(1,FyRmax));
+
+    if(handbrake && Math.abs(vz)>0.5) Flong-=Math.sign(vz)*muR*loadR*0.6; // gomme post. bloccate
+
+    /* --- integrazione --- */
+    const az=(Flong-FyF*Math.sin(this.steer))/m, ax=(FyF*Math.cos(this.steer)+FyR)/m;
+    this.vel.x+=(fwd.x*az+right.x*ax)*dt;
+    this.vel.z+=(fwd.z*az+right.z*ax)*dt;
+
+    // imbardata: momento dato dalle forze sugli assi
+    const tq=FyF*Math.cos(this.steer)*c.aDist - FyR*c.bDist;
+    this.yawRate+=tq/this.Iz*dt;
+    this.yawRate*=1/(1+0.35*dt);   // lieve smorzamento: derapate controllabili
+
+    // a bassa velocita' fonde col modello cinematico (manovre stabili da fermo)
+    const ls=clamp(Math.abs(vz)/4,0,1);
+    const kin=(vz/L)*Math.tan(this.steer);
+    this.yawRate=lerp(kin,this.yawRate,ls);
+    const damp=(1-ls)*6*dt;
+    this.vel.x-=right.x*vx*damp; this.vel.z-=right.z*vx*damp;
+
+    this.heading+=this.yawRate*dt;
+    this.pos.x+=this.vel.x*dt; this.pos.z+=this.vel.z*dt;
+
+    // arresto totale: elimina micro-derive
+    if(Math.hypot(this.vel.x,this.vel.z)<0.15 && !K.up && P.gas<.05 && !(this.gear==='R'&&brake)){
+      this.vel.set(0,0,0); this.yawRate*=0.5;
+    }
+
+    this.longSmooth=lerp(this.longSmooth, az, clamp(dt*5,0,1));
+    this.latSmooth=lerp(this.latSmooth, ax, clamp(dt*5,0,1));
+    this.vz=vz; this.vx=vx; this.braking=brakeF>c.mass*.8; this.handbrake=handbrake; // il solo freno motore non accende gli stop
 
     /* --- collisioni --- */
     // Oriented body against the city's axis-aligned obstacles (separating-axis test).
@@ -2542,17 +2662,11 @@ class Car {
     this.group.quaternion.slerp(q,1-Math.exp(-dt*18));
 
     // weight transfer visivo: beccheggio in frenata/accel., rollio in curva
-    if(this.dyn){ this.chassis.rotation.x=this.dyn.pitch; this.chassis.rotation.z=this.dyn.roll; }
-    else {
-      this.chassis.rotation.x=lerp(this.chassis.rotation.x, clamp(-this.longSmooth*0.011,-.09,.09), clamp(dt*6,0,1));
-      this.chassis.rotation.z=lerp(this.chassis.rotation.z, clamp(this.latSmooth*0.011,-.10,.10), clamp(dt*6,0,1));
-    }
+    this.chassis.rotation.x=lerp(this.chassis.rotation.x, clamp(-this.longSmooth*0.011,-.09,.09), clamp(dt*6,0,1));
+    this.chassis.rotation.z=lerp(this.chassis.rotation.z, clamp(this.latSmooth*0.011,-.10,.10), clamp(dt*6,0,1));
 
     const spin=this.vz/(this.wheelSpinR||this.cfg.body.wheelR)*dt;
-    if(this.dyn) this.wheels.forEach(w=>{      // ogni ruota gira alla sua velocità: pattinamenti e bloccaggi visibili
-      const hp=w.parent.position, dw=this.dyn.wheels.find(q=>q.front===(hp.z>0)&&Math.sign(q.l)===Math.sign(hp.x||1));
-      w.rotation.x+=dw?dw.omega*dt*(dw.R/(this.wheelSpinR||dw.R)):spin; });
-    else this.wheels.forEach(w=>w.rotation.x+=spin);
+    this.wheels.forEach(w=>w.rotation.x+=spin);
     this.frontPivots.forEach(p=>{
       const radius=(this.wheelBaseVis||this.cfg.wheelBase)/Math.max(.001,Math.abs(Math.tan(this.steer)));
       // Ackermann col passo delle ruote visibili; ruota interna limitata a ~38° come su un'auto reale
@@ -2871,10 +2985,6 @@ function applyEnvironment(){
   sunBall.visible=(state.time==='sunset'&&w==='sun');
   sunBall.material.color.set(0xffae42);
   rainObj.visible=(w==='rain');
-  // fumo: vento più teso con pioggia/nebbia; di notte un filo di luce diffusa (città, lampioni)
-  tireSmoke.wind.set(0.8,0,0.45).multiplyScalar(w==='rain'?2.4:w==='fog'?0.4:1);
-  tireSmoke.uniforms.uLift.value=state.time==='night'?0.035:0;
-  tireSmoke.tailGlow=state.time==='night'?0.7:state.time==='sunset'?0.15:0.06;
 
   // attrito: pioggia -40% (spazi di frenata circa raddoppiati)
   state.gripMul = w==='rain'?0.6 : w==='fog'?0.95 : 1.0;
@@ -3007,10 +3117,6 @@ function calcRpm(){
   if(c.ev){
     const r=clamp(s/c.topSpeed,0,1)*0.85+car.throttle*0.15;
     return { rpm:r, label:'kW '+Math.round(car.throttle*180*Math.max(.2,1-s/c.topSpeed/1.4)) };
-  }
-  if(car.dyn&&car.dyn.p.engine){               // giri reali dal motore simulato
-    const e=car.dyn.p.engine, rpm=clamp((car.engineRpm-e.idle)/(e.redline-e.idle),0,1)*0.84+0.12;
-    return { rpm, label:Math.round(car.engineRpm)+' RPM', gearNum:car.gearNum };
   }
   const gs=c.gears; let g=0;
   while(g<gs.length-1&&s>gs[g]) g++;
@@ -3256,13 +3362,6 @@ document.querySelectorAll('.trBtn').forEach(b=>b.onclick=()=>{
   rebuildTraffic(); applyEnvironment();
   toast(state.trafficOn?'TRAFFICO ATTIVO':'TRAFFICO SPENTO');
 });
-// aiuti alla guida (ABS, controllo di trazione e di stabilità): memorizzati tra le sessioni
-try{ state.assists=localStorage.getItem('veloce-assists')!=='off'; }catch{ state.assists=true; }
-document.querySelectorAll('.asBtn').forEach(b=>{ b.classList.toggle('on',(b.dataset.as==='on')===state.assists);
-  b.onclick=()=>{ state.assists=b.dataset.as==='on';
-    document.querySelectorAll('.asBtn').forEach(x=>x.classList.toggle('on',x===b));
-    try{ localStorage.setItem('veloce-assists',state.assists?'on':'off'); }catch{}
-    toast(state.assists?'ASSISTENZE ATTIVE (ABS · TC · ESC)':'ASSISTENZE SPENTE: GUIDA SIMULATIVA'); }; });
 document.querySelectorAll('.plBtn').forEach(b=>b.onclick=()=>{
   state.policeOn=(b.dataset.pl==='on');
   document.querySelectorAll('.plBtn').forEach(x=>x.classList.toggle('on',x===b));
@@ -3353,14 +3452,14 @@ function startGame(){
   }
   state.running=true; state.paused=false;state.photo=false;acc=0;
   releaseInput();document.body.classList.remove('in-menu','photo');
-  if(mapChanged){ simTime=0;rebuildTraffic(); rebuildPeds(); rebuildPolice(); skidMarks.clear(); tireSmoke.clear(); raceReset(); }
+  if(mapChanged){ simTime=0;rebuildTraffic(); rebuildPeds(); rebuildPolice(); skidMarks.clear(); raceReset(); }
   updateLightMats();
   applyEnvironment();
   menuEl.classList.add('hidden');
   document.querySelectorAll('.timeBtn').forEach(b=>b.classList.toggle('on',b.dataset.t===state.time));
   document.querySelectorAll('.trBtn').forEach(b=>b.classList.toggle('on',(b.dataset.tr==='on')===state.trafficOn));
   document.getElementById('touchUI').classList.toggle('hidden', !IS_TOUCH);
-  window.__dbg={ car, world, state, keys, touch:IS_TOUCH, race, smoke:tireSmoke, // handle per test/debug da console
+  window.__dbg={ car, world, state, keys, touch:IS_TOUCH, race, // handle per test/debug da console
                  skid:skidMarks, audio,
                  get traffic(){ return traffic; },
                  get peds(){ return peds; },
@@ -3474,7 +3573,7 @@ document.getElementById('photoBtn').onclick=togglePhoto;
 document.getElementById('resetBtn').onclick=recoverCar;
 document.getElementById('photoHint').onclick=togglePhoto;
 
-let last=performance.now(), acc=0;
+let last=performance.now(), acc=0, smokeAcc=0;
 const FIXED=1/120;
 
 function animate(t){
@@ -3513,10 +3612,22 @@ function animate(t){
     const slipAbs=Math.abs(car.slipR);
     const drifting=(slipAbs>0.18||car.handbrake)&&Math.abs(car.vz)>4;
     const burnout=car.spin>0.3&&car.throttle>0.4&&Math.abs(car.vz)<16; // pattinamento al lancio
-    // fumo dove il battistrada striscia (anche le volanti), polvere fuoristrada, spruzzi sul bagnato
-    const wet=state.weather==='rain';
-    tireSmoke.emitFromCar(car, world, dt, { rain:wet });
-    if(police) for(const u of police.units) tireSmoke.emitFromCar(u.car, world, dt, { rain:wet });
+    smokeAcc+=dt;
+    if(smokeAcc>0.03){
+      smokeAcc=0;
+      if((drifting||burnout)&&!surf.dust){ // fumo bianco da asfalto
+        for(const s of [-1,1]){
+          const p=car.rearWheelWorld(s);
+          smoke.spawn(p, new THREE.Vector3(rnd(-.5,.5),rnd(.6,1.6),rnd(-.5,.5)).add(
+            new THREE.Vector3(car.vel.x,0,car.vel.z).multiplyScalar(0.25)),
+            rnd(.8,1.3), rnd(.5,.9), 2.6, state.weather==='rain'?0x9aa8b5:0xdcdcdc, 0.34);
+        }
+      } else if(surf.dust&&Math.abs(car.vz)>6){ // polvere fuoristrada
+        const p=car.rearWheelWorld(Math.random()<.5?-1:1);
+        smoke.spawn(p, new THREE.Vector3(rnd(-.8,.8),rnd(.4,1.2),rnd(-.8,.8)),
+          rnd(.6,1), rnd(.6,1), 2.2, 0x8a6f4d, 0.3);
+      }
+    }
     skidMarks.update(car, drifting, burnout, surf);
     while(car.impacts.length){            // scintille sugli urti
       const im=car.impacts.pop();
@@ -3525,7 +3636,7 @@ function animate(t){
       burstSparks(new THREE.Vector3(im.x, car.group.position.y+0.5, im.z),
         Math.min(26, Math.round(im.speed*2.5)), new THREE.Vector3(car.vel.x,1,car.vel.z));
     }
-    tireSmoke.focusCar=car; tireSmoke.update(dt, camera); sparks.update(dt);
+    smoke.update(dt); sparks.update(dt);
 
     // --- pioggia attorno alla camera ---
     if(rainObj.visible){

@@ -1,0 +1,23 @@
+{
+  "name": "car-game",
+  "version": "1.0.0",
+  "description": "VELOCE — Italian Driving Experience",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "test": "playwright test"
+  },
+  "type": "module",
+  "dependencies": {
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.63.0",
+    "vite": "^8.2.2"
+  },
+  "private": true,
+  "engines": {
+    "node": "^22.12.0 || >=24.0.0"
+  }
+}
